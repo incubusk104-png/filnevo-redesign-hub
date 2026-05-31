@@ -1,0 +1,1 @@
+- [Improved Landing Page Architecture with Shared Components](architecture-improvements-20260601.md) — Created reusable Button and Section components, refactored all landing page sections to use shared components
