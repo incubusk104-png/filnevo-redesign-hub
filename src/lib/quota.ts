@@ -1,65 +1,50 @@
-/**
- * In-memory mirror of the Lock 2 `check_and_increment_quota` PL/pgSQL function.
- * Used by the demo when no Supabase database is configured so the UI quota
- * interactions behave identically to the production atomic function.
- */
-
-export interface QuotaResult {
+// Mock quota implementation for Edge Runtime compatibility
+type QuotaResult = {
   allowed: boolean;
-  quotaUsed: number;
-  quotaLimit: number;
-  remaining: number;
-}
-
-interface TenantQuota {
   used: number;
   limit: number;
-}
+  remaining: number;
+};
 
-const DEFAULT_LIMIT = 100;
-const tenants = new Map<string, TenantQuota>();
+const quotas: Record<string, { used: number; limit: number }> = {};
 
-function getTenant(id: string): TenantQuota {
-  let t = tenants.get(id);
-  if (!t) {
-    t = { used: 0, limit: DEFAULT_LIMIT };
-    tenants.set(id, t);
-  }
-  return t;
-}
-
-export function checkAndIncrementQuota(
-  tenantId: string,
-  increment = 1,
-): QuotaResult {
-  const t = getTenant(tenantId);
-  if (t.used + increment > t.limit) {
-    return {
-      allowed: false,
-      quotaUsed: t.used,
-      quotaLimit: t.limit,
-      remaining: Math.max(t.limit - t.used, 0),
-    };
-  }
-  t.used += increment;
+export const peekQuota = (tenantId: string): QuotaResult => {
+  const quota = quotas[tenantId] || { used: 0, limit: 100 };
   return {
-    allowed: true,
-    quotaUsed: t.used,
-    quotaLimit: t.limit,
-    remaining: t.limit - t.used,
+    allowed: quota.used < quota.limit,
+    used: quota.used,
+    limit: quota.limit,
+    remaining: Math.max(0, quota.limit - quota.used)
   };
-}
+};
 
-export function setTenantUsage(tenantId: string, used: number, limit = DEFAULT_LIMIT) {
-  tenants.set(tenantId, { used: Math.min(used, limit), limit });
-}
+export const setTenantUsage = (tenantId: string, used: number, limit?: number) => {
+  if (!quotas[tenantId]) {
+    quotas[tenantId] = { used: 0, limit: 100 };
+  }
+  quotas[tenantId].used = used;
+  if (limit !== undefined) {
+    quotas[tenantId].limit = limit;
+  }
+};
 
-export function peekQuota(tenantId: string): QuotaResult {
-  const t = getTenant(tenantId);
+export const checkAndIncrementQuota = (tenantId: string, increment: number = 1): QuotaResult => {
+  if (!quotas[tenantId]) {
+    quotas[tenantId] = { used: 0, limit: 100 };
+  }
+
+  const quota = quotas[tenantId];
+  const newUsed = quota.used + increment;
+  const allowed = newUsed <= quota.limit;
+
+  if (allowed) {
+    quota.used = newUsed;
+  }
+
   return {
-    allowed: t.used < t.limit,
-    quotaUsed: t.used,
-    quotaLimit: t.limit,
-    remaining: Math.max(t.limit - t.used, 0),
+    allowed,
+    used: quota.used,
+    limit: quota.limit,
+    remaining: Math.max(0, quota.limit - quota.used)
   };
-}
+};

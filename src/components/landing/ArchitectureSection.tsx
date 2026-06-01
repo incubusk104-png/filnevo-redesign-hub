@@ -71,7 +71,7 @@ export default function ArchitectureSection() {
             </div>
 
             {/* Load Balancer */}
-            <div className="absolute left-10 top=100">
+            <div className="absolute left-10 top={100}">
               <div className="data-card p-6 w-64">
                 <div className="flex items-start gap-3 mb-4">
                   <div className="flex-shrink-0 w-8 h-8 bg-insight-cyan/10 rounded-xl flex items-center justify-center">
@@ -98,7 +98,7 @@ export default function ArchitectureSection() {
             </div>
 
             {/* Service Nodes */}
-            <div className="absolute left-10 top=220">
+            <div className="absolute left-10 top={220}">
               <div className="data-card p-6 w-64">
                 <div className="flex items-start gap-3 mb-4">
                   <div className="flex-shrink-0 w-8 h-8 bg-efficiency-green/10 rounded-xl flex items-center justify-center">
@@ -125,7 +125,7 @@ export default function ArchitectureSection() {
             </div>
 
             {/* Database */}
-            <div className="absolute left-10 top=300">
+            <div className="absolute left-10 top={300}">
               <div className="data-card p-6 w-64">
                 <div className="flex items-start gap-3 mb-4">
                   <div className="flex-shrink-0 w-8 h-8 bg-warning-amber/10 rounded-xl flex items-center justify-center">
@@ -152,7 +152,7 @@ export default function ArchitectureSection() {
             </div>
 
             {/* Analytics Engine */}
-            <div className="absolute left-10 top=160">
+            <div className="absolute left-10 top={160}">
               <div className="data-card p-6 w-64">
                 <div className="flex items-start gap-3 mb-4">
                   <div className="flex-shrink-0 w-8 h-8 bg-velocity-blue/10 rounded-xl flex items-center justify-center">
@@ -179,7 +179,7 @@ export default function ArchitectureSection() {
             </div>
 
             {/* Service Designer */}
-            <div className="absolute right-10 top=80">
+            <div className="absolute right-10 top={80}">
               <div className="data-card p-6 w-64">
                 <div className="flex items-start gap-3 mb-4">
                   <div className="flex-shrink-0 w-8 h-8 bg-neutral-800/30 rounded-xl flex items-center justify-center">
@@ -203,4 +203,10 @@ export default function ArchitectureSection() {
                   <span className="text-neutral-100">faster design</span>
                 </div>
               </div>
-            </div
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

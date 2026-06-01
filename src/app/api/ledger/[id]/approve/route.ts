@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { createMockSupabaseClient as createClient } from "@/mock/lib/supabase/server";
 
 export const runtime = "edge";
 

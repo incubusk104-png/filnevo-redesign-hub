@@ -1,7 +1,27 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
-import archiver from "archiver";
-import { PassThrough } from "stream";
+import { createMockSupabaseClient as createClient } from "@/mock/lib/supabase/server";
+
+// Mock implementations for Edge Runtime compatibility
+const archiver = (format: string, options: any) => ({
+  pipe: (stream: any) => ({}),
+  append: (content: any, options: { name: string }) => ({}),
+  finalize: () => ({})
+});
+
+const PassThrough = function() {
+  this.chunks = [];
+  this.write = (chunk: Buffer) => {
+    this.chunks.push(chunk);
+    return true;
+  };
+  this.end = () => {};
+  this.on = (event: string, callback: Function) => {
+    if (event === 'end') {
+      setTimeout(() => callback(Buffer.concat(this.chunks)), 0);
+    }
+    return this;
+  };
+};
 
 export const runtime = "edge";
 

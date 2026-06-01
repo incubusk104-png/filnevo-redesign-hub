@@ -83,6 +83,7 @@ export default function CTASection() {
             <span className="text-xs">24/7 expert support</span>
           </div>
         </div>
-      </section>
-    );
+      </div>
+    </section>
+  );
 }
