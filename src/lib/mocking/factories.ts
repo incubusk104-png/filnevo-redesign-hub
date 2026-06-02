@@ -19,3 +19,27 @@ export const createRateLimiter = (id?: string) => {
   }
   return createMockRateLimiter(id); // Placeholder - will be replaced with real implementation later
 };
+
+// Supabase Client Factory
+import { createClient as createSupabaseClient } from '@supabase/supabase-js';
+import { createMockSupabaseClient } from '@/lib/supabase/server';
+
+/**
+ * Factory function that returns appropriate Supabase client based on mode
+ * @returns Supabase client (mock in demo mode, real in production mode)
+ */
+export const createSupabaseClientFactory = () => {
+  if (isDemoMode()) {
+    return createMockSupabaseClient();
+  }
+
+  // Production mode - return real Supabase client
+  const supabaseUrl = process.env.SUPABASE_URL;
+  const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
+
+  if (!supabaseUrl || !supabaseAnonKey) {
+    throw new Error('Missing Supabase environment variables');
+  }
+
+  return createSupabaseClient(supabaseUrl, supabaseAnonKey);
+};
