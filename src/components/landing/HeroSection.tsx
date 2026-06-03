@@ -1,6 +1,4 @@
 import { Button } from "@/components/shared/Button";
-import AnimatedCounter from "@/components/landing/AnimatedCounter";
-import LiveTicker from "@/components/landing/LiveTicker";
 
 export default function HeroSection() {
   return (
@@ -17,36 +15,33 @@ export default function HeroSection() {
         <div className="flex items-center justify-center space-x-4 mb-6">
           <div className="w-12 h-12 bg-gradient-to-r from-velocity-blue/20 to-insight-cyan/20 rounded-xl flex items-center justify-center">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M4 4h2v2H4V4zm0 6h2v2H4v-2zm0 6h2v2H4v-2zm6-4h2v2h-2V6zm0 2h2v2h-2v-2zm0 2h2v2h-2v-2zm4-8h2v2h-2V6zm0 2h2v2h-2v-2zm0 2h2v2h-2v-2zm0 2h2v2h-2v-2zm-8 4h2v2h-2v-2zm0 2h2v2h-2v-2zm0 2h2v2h-2v-2zm4-6h2v2h-2V6zm0 2h2v2h-2v-2zm0 2h2v2h-2v-2zm0 2h2v2h-2v-2z" fill="%233b82f6" opacity="0.1"/>
+              <path d="M4 4h2v2H4V4zm0 6h2v2H4v-2zm0 6h2v2H4v-2zm6-4h2v2h-2V6zm0 2h2v2h-2v-2zm0 2h2v2h-2v-2zm0 2h2v2h-2v-2zm4-8h2v2h-2V6zm0 2h2v2h-2v-2zm0 2h2v2h-2v-2zm0 2h2v2h-2v-2zm-8 4h2v2h-2v-2zm0 2h2v2h-2v-2zm0 2h2v2h-2v-2zm4-6h2v2h-2V6zm0 2h2v2h-2v-2zm0 2h2v2h-2v-2zm0 2h2v2h-2v-2z" fill="%233b82f6" opacity="0.1"/>
               <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8 8-3.59 8-8 8zM13 10h-2V7h-2v3H7v2h3v3h2v-3h3v-2h-3z" fill="%233b82f6"/>
             </svg>
           </div>
           <div>
             <h2 className="text-2xl font-semibold text-foreground tracking-tight">
-              Accelerate Your Business Services
+              BIR Tax Compliance Automation
             </h2>
             <p className="mt-2 text-text-muted max-w-lg">
-              Purpose-built SaaS platform that helps small and large enterprises
-              deliver their services faster through intelligent automation,
-              real-time optimization, and seamless workflow orchestration.
+              Automate your BIR tax forms, track deadlines, and never miss a filing again.
             </p>
           </div>
         </div>
 
         {/* Main Headline */}
         <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl text-foreground mb-6 leading-tight">
-          Transform Service Delivery Speed
+          Automate Your BIR Tax Compliance
         </h1>
 
         {/* Sub-headline with metrics focus */}
         <p className="text-lg text-text-muted max-w-2xl">
-          Measure, optimize, and accelerate every aspect of your service delivery
-          with precision analytics and automated workflow optimization.
+          From zero-entry document capture to automated BIR form filling, our platform ensures accurate, on-time tax filings while saving you hours each month.
         </p>
 
         {/* Key Metrics Row */}
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {/* Services Accelerated */}
+          {/* Documents Processed */}
           <div className="metrics-container p-6 text-center">
             <div className="flex items-center justify-center mb-3">
               <div className="w-8 h-8 bg-velocity-blue/10 rounded-lg flex items-center justify-center">
@@ -61,10 +56,10 @@ export default function HeroSection() {
               </div>
             </div>
             <h3 className="font-metrics text-3xl text-velocity-blue font-bold">
-              <AnimatedCounter value={10} suffix="K+" />
+              50K+
             </h3>
             <p className="mt-2 text-text-muted text-sm">
-              Services Accelerated
+              Documents Processed/Month
             </p>
           </div>
 
@@ -86,14 +81,14 @@ export default function HeroSection() {
               </div>
             </div>
             <h3 className="font-metrics text-3xl text-insight-cyan font-bold">
-              <AnimatedCounter value={250} suffix="K+" />
+              10K+
             </h3>
             <p className="mt-2 text-text-muted text-sm">
-              Hours Saved Monthly
+              Hours Saved on Tax Prep/Month
             </p>
           </div>
 
-          {/* Efficiency Gain */}
+          {/* Accuracy Rate */}
           <div className="metrics-container p-6 text-center">
             <div className="flex items-center justify-center mb-3">
               <div className="w-8 h-8 bg-efficiency-green/10 rounded-lg flex items-center justify-center">
@@ -103,10 +98,10 @@ export default function HeroSection() {
               </div>
             </div>
             <h3 className="font-metrics text-3xl text-efficiency-green font-bold">
-              <AnimatedCounter value={3} suffix="x" />
+              99.9%
             </h3>
             <p className="mt-2 text-text-muted text-sm">
-              Average Efficiency Gain
+              Accuracy Rate
             </p>
           </div>
 
@@ -121,7 +116,7 @@ export default function HeroSection() {
               </div>
             </div>
             <h3 className="font-metrics text-3xl text-warning-amber font-bold">
-              <AnimatedCounter value={99.9} decimals={1} suffix="%" />
+              99.9%
             </h3>
             <p className="mt-2 text-text-muted text-sm">
               Platform Uptime
@@ -135,13 +130,22 @@ export default function HeroSection() {
             Explore Features
           </Button>
           <Button variant="primary" href="/login">
-            Start Free Trial
+            Get Started Free
           </Button>
         </div>
 
         {/* Live Data Ticker (subtle motion indicator) */}
-        <LiveTicker />
+        <div className="mt-16 flex items-center justify-center space-x-6 text-text-muted">
+          <div className="flex items-center space-x-2 animate-metric-pulse">
+            <div className="w-2 h-2 bg-velocity-blue rounded-full" />
+            <span className="text-xs font-metrics">Live: Processing 1,247 receipts/sec</span>
+          </div>
+          <div className="w-1 h-[20px] bg-neutral-700/30" />
+          <div className="flex items-center space-x-2">
+            <span className="text-xs">Last filing: 2m 14s ago</span>
+          </div>
+        </div>
       </div>
-      </section>
+    </section>
   );
 }

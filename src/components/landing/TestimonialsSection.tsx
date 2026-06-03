@@ -12,35 +12,35 @@ export default function TestimonialsSection() {
         {/* Header */}
         <div className="text-center mb-16">
           <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl text-foreground mb-6 tracking-tight">
-            See How We Accelerate Service Delivery
+            See How We Transform BIR Tax Compliance
           </h2>
           <p className="text-lg text-text-muted max-w-3xl mx-auto">
-            Real customers achieving measurable speed improvements with our precision platform
+            Real businesses achieving measurable time savings and accuracy improvements with our BIR tax automation platform
           </p>
         </div>
 
         {/* Testimonials Grid */}
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
 
-          {/* Testimonial 1: FinTech Startup */}
+          {/* Testimonial 1: Freelance Consultant */}
           <article className="data-card p-8 hover:scale-[1.02] transition-transform duration-300 border border-insight-cyan/30">
             <div className="space-y-6">
               {/* Quote icon */}
               <div className="w-8 h-8 text-insight-cyan/20 flex items-center justify-center">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M4 11a2 2 0 100 4H1m0 4a2 2 0 100 4H1m11-8a2 2 0 100 4h4M11 15a2 2 0 100 4h4" stroke="%2306b6d4" stroke-width="1.5"/>
+                  <path d="M4 11a2 2 0 100 4H1m0 4a2 2 0 1000 4H1m11-8a2 2 0 1000 4h4M11 15a2 2 0 1000 4h4" stroke="%2306b6d4" stroke-width="1.5"/>
                 </svg>
               </div>
 
               {/* Testimonial text */}
               <p className="text-text-muted italic">
-                "Our service deployment time dropped from 45 minutes to under 3 minutes after implementing the workflow optimizer and intelligent load balancer."
+                "As a freelance consultant juggling multiple clients, I used to spend 8 hours every quarter on BIR forms. Now I complete everything in under 30 minutes with zero entry errors."
               </p>
 
               {/* Metric badge */}
               <div className="mt-4 flex items-center gap-2">
-                <span className="badge badge-success">8x</span>
-                <span className="text-xs font-metrics text-insight-cyan">faster deployment</span>
+                <span className="badge badge-success">96%</span>
+                <span className="text-xs font-metrics text-insight-cyan">time saved</span>
               </div>
 
               {/* Customer info */}
@@ -48,41 +48,41 @@ export default function TestimonialsSection() {
                 <div className="flex-shrink-0 w-10 h-10 bg-insight-cyan/10 rounded-xl flex items-center justify-center">
                   <div className="w-6 h-6 bg-insight-cyan/20 rounded-full flex items-center justify-center">
                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M6 0a4 4 0 100 4 4 4 0 000-4zM6 10a2 2 0 100-4 2 2 0 000 4z" fill="%2306b6d4"/>
+                      <path d="M6 0a4 4 0 1000 4 4 4 0 000-4zM6 10a2 2 0 1000-4 2 2 0 000 4z" fill="%2306b6d4"/>
                     </svg>
                   </div>
                 </div>
                 <div>
                   <h3 className="font-metrics text-sm text-neutral-100 font-semibold mb-1">
-                    Alex Rivera
+                    Maria Santos
                   </h3>
                   <p className="text-xs text-text-muted">
-                    CTO, FinTech Startup
+                    Independent Business Consultant
                   </p>
                 </div>
               </div>
             </div>
           </article>
 
-          {/* Testimonial 2: E-commerce Platform */}
+          {/* Testimonial 2: Small Retail Business */}
           <article className="data-card p-8 hover:scale-[1.02] transition-transform duration-300 border border-velocity-blue/30">
             <div className="space-y-6">
               {/* Quote icon */}
               <div className="w-8 h-8 text-velocity-blue/20 flex items-center justify-center">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M4 11a2 2 0 100 4H1m0 4a2 2 0 100 4H1m11-8a2 2 0 1000 4h4M11 15a2 2 0 1000 4h4" stroke="%233b82f6" stroke-width="1.5"/>
+                  <path d="M4 11a2 2 0 100 4H1m0 4a2 2 0 1000 4H1m11-8a2 2 0 1000 4h4M11 15a2 2 0 1000 4h4" stroke="%233b82f6" stroke-width="1.5"/>
                 </svg>
               </div>
 
               {/* Testimonial text */}
               <p className="text-text-muted italic">
-                "During peak holiday traffic, our API response times improved by 65% thanks to the intelligent load balancer and real-time autoscaling."
+                "Running a small boutique with daily sales, I used to dread BIR deadlines. Now with WhatsApp forwarding and auto-fill, my monthly filings take 15 minutes instead of 3 hours."
               </p>
 
               {/* Metric badge */}
               <div className="mt-4 flex items-center gap-2">
-                <span className="badge badge-info">65%</span>
-                <span className="text-xs font-metrics text-velocity-blue">faster response</span>
+                <span className="badge badge-info">92%</span>
+                <span className="text-xs font-metrics text-velocity-blue">time reduction</span>
               </div>
 
               {/* Customer info */}
@@ -96,35 +96,35 @@ export default function TestimonialsSection() {
                 </div>
                 <div>
                   <h3 className="font-metrics text-sm text-neutral-100 font-semibold mb-1">
-                    Dr. Samantha Chen
+                    Juan dela Cruz
                   </h3>
                   <p className="text-xs text-text-muted">
-                    VP Engineering, E-commerce Platform
+                    Owner, Dagupan Boutique Store
                   </p>
                 </div>
               </div>
             </div>
           </article>
 
-          {/* Testimonial 3: Healthcare SaaS */}
+          {/* Testimonial 3: Marketing Agency */}
           <article className="data-card p-8 hover:scale-[1.02] transition-transform duration-300 border border-efficiency-green/30">
             <div className="space-y-6">
               {/* Quote icon */}
               <div className="w-8 h-8 text-efficiency-green/20 flex items-center justify-center">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M4 11a2 2 0 100 4H1m0 4a2 2 0 100 4H1m11-8a2 2 0 1000 4h4M11 15a2 2 0 1000 4h4" stroke="%2310b981" stroke-width="1.5"/>
+                  <path d="M4 11a2 2 0 100 4H1m0 4a2 2 0 1000 4H1m11-8a2 2 0 1000 4h4M11 15a2 2 0 1000 4h4" stroke="%2310b981" stroke-width="1.5"/>
                 </svg>
               </div>
 
               {/* Testimonial text */}
               <p className="text-text-muted italic">
-                "Patient data processing workflows now complete in seconds instead of minutes, allowing us to serve 3x more patients daily."
+                "Managing tax compliance for 15+ client businesses was a nightmare. With the multi-workspace routing and team approvals, we've cut our processing time by 70% and eliminated filing errors completely."
               </p>
 
               {/* Metric badge */}
               <div className="mt-4 flex items-center gap-2">
-                <span className="badge badge-warning">3x</span>
-                <span className="text-xs font-metrics text-efficiency-green">patient throughput</span>
+                <span className="badge badge-warning">70%</span>
+                <span className="text-xs font-metrics text-efficiency-green">efficiency gain</span>
               </div>
 
               {/* Customer info */}
@@ -138,35 +138,35 @@ export default function TestimonialsSection() {
                 </div>
                 <div>
                   <h3 className="font-metrics text-sm text-neutral-100 font-semibold mb-1">
-                    Marcus Johnson
+                    Atty. Rafael Lim
                   </h3>
                   <p className="text-xs text-text-muted">
-                    CTO, Healthcare SaaS Provider
+                    Managing Director, TaxPro Agency
                   </p>
                 </div>
               </div>
             </div>
           </article>
 
-          {/* Testimonial 4: Logistics Company */}
+          {/* Testimonial 4: Restaurant Chain */}
           <article className="data-card p-8 hover:scale-[1.02] transition-transform duration-300 border border-warning-amber/30">
             <div className="space-y-6">
               {/* Quote icon */}
               <div className="w-8 h-8 text-warning-amber/20 flex items-center justify-center">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M4 11a2 2 0 100 4H1m0 4a2 2 0 100 4H1m11-8a2 2 0 1000 4h4M11 15a2 2 0 1000 4h4" stroke="%23f59e0b" stroke-width="1.5"/>
+                  <path d="M4 11a2 2 0 100 4H1m0 4a2 2 0 1000 4H1m11-8a2 2 0 1000 4h4M11 15a2 2 0 1000 4h4" stroke="%23f59e0b" stroke-width="1.5"/>
                 </svg>
               </div>
 
               {/* Testimonial text */}
               <p className="text-text-muted italic">
-                "Route optimization calculations that used to take 20 minutes now return in under 30 seconds, enabling real-time delivery adjustments."
+                "With 12 restaurant locations processing thousands of receipts monthly, the duplicate detection and multi-currency predictor have saved us from costly BIR penalties and improved our tax accuracy to 99.8%."
               </p>
 
               {/* Metric badge */}
               <div className="mt-4 flex items-center gap-2">
-                <span className="badge badge-error">40x</span>
-                <span className="text-xs font-metrics text-warning-amber">faster routing</span>
+                <span className="badge badge-error">99.8%</span>
+                <span className="text-xs font-metrics text-warning-amber">accuracy rate</span>
               </div>
 
               {/* Customer info */}
@@ -180,35 +180,36 @@ export default function TestimonialsSection() {
                 </div>
                 <div>
                   <h3 className="font-metrics text-sm text-neutral-100 font-semibold mb-1">
-                    Elena Rodriguez
+                    Gladys Reyes
                   </h3>
                   <p className="text-xs text-text-muted">
-                    Director of Ops, Global Logistics Co
+                    Finance Director, Manila Restaurant Group
                   </p>
                 </div>
               </div>
             </div>
           </article>
+
         </div>
 
         {/* Call to Action */}
         <div className="mt-20 text-center">
           <h3 className="font-heading text-2xl md:text-3xl text-foreground mb-6">
-            Ready to measure and accelerate your service delivery?
+            Ready to transform your BIR tax compliance?
           </h3>
           <p className="text-text-muted max-w-2xl mx-auto mb-8">
-            Join hundreds of businesses already seeing measurable speed improvements
+            Join thousands of Filipino businesses already saving hours on tax preparation every month
           </p>
           <div className="flex flex-col sm:flex-row sm:justify-center gap-4 sm:gap-6">
             <Button variant="outline" href="#features">
               Explore Features
             </Button>
             <Button variant="primary" href="/login">
-              Start Free Trial
+              Get Started Free
             </Button>
           </div>
         </div>
       </div>
-      </section>
-    );
+    </section>
+  );
 }
