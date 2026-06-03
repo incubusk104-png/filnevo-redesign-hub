@@ -2,7 +2,7 @@ import { Button } from "@/components/shared/Button";
 
 export default function Navbar() {
   return (
-    <header className="sticky top-0 z-50 border-b border-neutral-800 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 border-b border-neutral-800/60 bg-background/70 backdrop-blur-xl">
       <nav
         aria-label="Primary"
         className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6 lg:px-8"
@@ -14,7 +14,7 @@ export default function Navbar() {
               <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 8h-2V7h-2v3H7v2h3v3h2v-3h3v-2h-3z" fill="#3b82f6" />
             </svg>
           </span>
-          <span className="font-heading text-lg font-semibold tracking-tight text-foreground">
+          <span className="font-heading text-lg font-bold tracking-tight gradient-text">
             Filnevo
           </span>
         </a>

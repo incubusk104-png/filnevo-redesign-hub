@@ -11,8 +11,9 @@ export default function TestimonialsSection() {
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">
-          <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl text-foreground mb-6 tracking-tight">
-            See How We Transform BIR Tax Compliance
+          <span className="eyebrow">Customer stories</span>
+          <h2 className="mt-5 font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6 tracking-tight">
+            See how we transform <span className="gradient-text">BIR compliance</span>
           </h2>
           <p className="text-lg text-text-muted max-w-3xl mx-auto">
             Real businesses achieving measurable time savings and accuracy improvements with our BIR tax automation platform
@@ -23,7 +24,7 @@ export default function TestimonialsSection() {
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
 
           {/* Testimonial 1: Freelance Consultant */}
-          <article className="data-card p-8 hover:scale-[1.02] transition-transform duration-300 border border-insight-cyan/30">
+          <article className="data-card p-8 border border-insight-cyan/30">
             <div className="space-y-6">
               {/* Quote icon */}
               <div className="w-8 h-8 text-insight-cyan/20 flex items-center justify-center">
@@ -65,7 +66,7 @@ export default function TestimonialsSection() {
           </article>
 
           {/* Testimonial 2: Small Retail Business */}
-          <article className="data-card p-8 hover:scale-[1.02] transition-transform duration-300 border border-velocity-blue/30">
+          <article className="data-card p-8 border border-velocity-blue/30">
             <div className="space-y-6">
               {/* Quote icon */}
               <div className="w-8 h-8 text-velocity-blue/20 flex items-center justify-center">
@@ -107,7 +108,7 @@ export default function TestimonialsSection() {
           </article>
 
           {/* Testimonial 3: Marketing Agency */}
-          <article className="data-card p-8 hover:scale-[1.02] transition-transform duration-300 border border-efficiency-green/30">
+          <article className="data-card p-8 border border-efficiency-green/30">
             <div className="space-y-6">
               {/* Quote icon */}
               <div className="w-8 h-8 text-efficiency-green/20 flex items-center justify-center">
@@ -149,7 +150,7 @@ export default function TestimonialsSection() {
           </article>
 
           {/* Testimonial 4: Restaurant Chain */}
-          <article className="data-card p-8 hover:scale-[1.02] transition-transform duration-300 border border-warning-amber/30">
+          <article className="data-card p-8 border border-warning-amber/30">
             <div className="space-y-6">
               {/* Quote icon */}
               <div className="w-8 h-8 text-warning-amber/20 flex items-center justify-center">

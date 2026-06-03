@@ -11,8 +11,9 @@ export default function FeaturesSection() {
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">
-          <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl text-foreground mb-6 tracking-tight">
-            BIR Tax Compliance Features
+          <span className="eyebrow">Capabilities</span>
+          <h2 className="mt-5 font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6 tracking-tight">
+            Everything you need for <span className="gradient-text">BIR compliance</span>
           </h2>
           <p className="text-lg text-text-muted max-w-3xl mx-auto">
             Every feature is designed to automate your BIR tax filing, ensure accuracy,
@@ -24,7 +25,7 @@ export default function FeaturesSection() {
         <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-3">
 
           {/* Feature 1: Zero-Entry Mobile Document Capture */}
-          <article className="data-card p-8 hover:scale-[1.02] transition-transform duration-300">
+          <article className="data-card p-8">
             <div className="flex items-start gap-4 mb-6">
               <div className="flex-shrink-0 w-10 h-10 bg-velocity-blue/10 rounded-xl flex items-center justify-center">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -50,7 +51,7 @@ export default function FeaturesSection() {
           </article>
 
           {/* Feature 2: BIR 10-Second Auto-Fill */}
-          <article className="data-card p-8 hover:scale-[1.02] transition-transform duration-300">
+          <article className="data-card p-8">
             <div className="flex items-start gap-4 mb-6">
               <div className="flex-shrink-0 w-10 h-10 bg-insight-cyan/10 rounded-xl flex items-center justify-center">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -76,7 +77,7 @@ export default function FeaturesSection() {
           </article>
 
           {/* Feature 3: Dynamic BIR Deadline Countdown */}
-          <article className="data-card p-8 hover:scale-[1.02] transition-transform duration-300">
+          <article className="data-card p-8">
             <div className="flex items-start gap-4 mb-6">
               <div className="flex-shrink-0 w-10 h-10 bg-efficiency-green/10 rounded-xl flex items-center justify-center">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -104,7 +105,7 @@ export default function FeaturesSection() {
           </article>
 
           {/* Feature 4: WhatsApp Receipt Forwarding Bot */}
-          <article className="data-card p-8 hover:scale-[1.02] transition-transform duration-300">
+          <article className="data-card p-8">
             <div className="flex items-start gap-4 mb-6">
               <div className="flex-shrink-0 w-10 h-10 bg-warning-amber/10 rounded-xl flex items-center justify-center">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -130,7 +131,7 @@ export default function FeaturesSection() {
           </article>
 
           {/* Feature 5: Multi-Currency Ad-Spend Predictor */}
-          <article className="data-card p-8 hover:scale-[1.02] transition-transform duration-300">
+          <article className="data-card p-8">
             <div className="flex items-start gap-4 mb-6">
               <div className="flex-shrink-0 w-10 h-10 bg-alert-red/10 rounded-xl flex items-center justify-center">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -157,7 +158,7 @@ export default function FeaturesSection() {
           </article>
 
           {/* Feature 6: Real-Time Dual-Receipt Anti-Fraud Flag */}
-          <article className="data-card p-8 hover:scale-[1.02] transition-transform duration-300">
+          <article className="data-card p-8">
             <div className="flex items-start gap-4 mb-6">
               <div className="flex-shrink-0 w-10 h-10 bg-neutral-800/20 rounded-xl flex items-center justify-center">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
