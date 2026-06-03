@@ -11,8 +11,9 @@ export default function PricingSection() {
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">
-          <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl text-foreground mb-6 tracking-tight">
-            Choose Your BIR Tax Solution Plan
+          <span className="eyebrow">Pricing</span>
+          <h2 className="mt-5 font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6 tracking-tight">
+            Plans that scale with your <span className="gradient-text">filings</span>
           </h2>
           <p className="text-lg text-text-muted max-w-3xl mx-auto">
             Flexible pricing for businesses of all sizes. Every plan includes our BIR compliance tools with progressive feature access.
@@ -23,7 +24,7 @@ export default function PricingSection() {
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
 
           {/* Free Tier */}
-          <article className="data-card p-8 hover:scale-[1.02] transition-transform duration-300 border border-neutral-800/30">
+          <article className="data-card p-8 border border-neutral-800/30">
             <div className="flex items-start gap-4 mb-6">
               <div className="flex-shrink-0 w-10 h-10 bg-neutral-800/20 rounded-xl flex items-center justify-center">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -75,7 +76,7 @@ export default function PricingSection() {
           </article>
 
           {/* Starter Tier */}
-          <article className="data-card p-8 hover:scale-[1.02] transition-transform duration-300 border border-insight-cyan/30">
+          <article className="data-card p-8 border border-insight-cyan/30">
             <div className="flex items-start gap-4 mb-6">
               <div className="flex-shrink-0 w-10 h-10 bg-insight-cyan/10 rounded-xl flex items-center justify-center">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -135,7 +136,7 @@ export default function PricingSection() {
           </article>
 
           {/* Business Pro Tier */}
-          <article className="data-card p-8 hover:scale-[1.02] transition-transform duration-300 border border-velocity-blue/30">
+          <article className="data-card p-8 border border-velocity-blue/30">
             <div className="flex items-start gap-4 mb-6">
               <div className="flex-shrink-0 w-10 h-10 bg-velocity-blue/10 rounded-xl flex items-center justify-center">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -195,7 +196,7 @@ export default function PricingSection() {
           </article>
 
           {/* Agency Core Tier */}
-          <article className="data-card p-8 hover:scale-[1.02] transition-transform duration-300 border border-warning-amber/30">
+          <article className="data-card p-8 border border-warning-amber/30">
             <div className="flex items-start gap-4 mb-6">
               <div className="flex-shrink-0 w-10 h-10 bg-warning-amber/10 rounded-xl flex items-center justify-center">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">

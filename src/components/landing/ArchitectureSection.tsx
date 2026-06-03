@@ -10,8 +10,9 @@ export default function ArchitectureSection() {
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">
-          <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl text-foreground mb-6 tracking-tight">
-            Triple-Lock Security Architecture for BIR Tax Compliance
+          <span className="eyebrow">Security</span>
+          <h2 className="mt-5 font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6 tracking-tight">
+            <span className="gradient-text">Triple-Lock</span> security architecture
           </h2>
           <p className="text-lg text-text-muted max-w-3xl mx-auto">
             Bank-grade security with triple-layer protection ensuring absolute data isolation,

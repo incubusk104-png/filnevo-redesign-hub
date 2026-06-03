@@ -43,6 +43,17 @@
   --hairline: #1e293b;
   --input-bg: #111827;
   --input-border: #374151;
+
+  /* Secondary / supporting text — previously undefined, which left every
+     `text-text-muted` element rendering at full foreground brightness and
+     killed the visual hierarchy. */
+  --text-muted: #94a3b8;
+  --text-faint: #64748b;
+
+  /* Brand gradient stops */
+  --brand-from: #3b82f6;
+  --brand-via: #4f86f7;
+  --brand-to: #06b6d4;
 }
 
 /* Typography - optimized for data density and readability */
@@ -75,6 +86,10 @@
   --color-input-bg: var(--input-bg);
   --color-input-border: var(--input-border);
 
+  /* Text tones */
+  --color-text-muted: var(--text-muted);
+  --color-text-faint: var(--text-faint);
+
   /* Chart colors */
   --color-chart-bg: var(--chart-bg);
   --color-chart-grid: var(--chart-grid);
@@ -84,17 +99,12 @@
   --color-chart-warning: var(--chart-warning);
   --color-chart-danger: var(--chart-danger);
 
-  /* Fonts - chosen for data clarity and professional appearance */
-  --font-metrics: var(--font-space-grotesk);      /* Primary - clean, geometric, excellent for numbers */
-  --font-data: var(--font-ibm-plex-mono);         /* For code, IDs, technical data */
-  --font-heading: var(--font-satoshi);            /* Headings - modern, highly readable */
-  --font-body: var(--font-inter);                 /* Body - optimised for reading */
-
-  /* Google Font imports (these would normally be in next.config.ts or layout.tsx) */
-  --font-space-grotesk: "Space Grotesk", system-ui, sans-serif;
-  --font-ibm-plex-mono: "IBM Plex Mono", ui-monospace, monospace;
-  --font-satoshi: "Satoshi", system-ui, sans-serif;
-  --font-inter: "Inter", system-ui, sans-serif;
+  /* Fonts — loaded via next/font in layout.tsx and exposed as CSS variables.
+     Mapped to semantic roles here so component class names stay stable. */
+  --font-heading: var(--font-bricolage), system-ui, sans-serif;   /* Display headings — distinctive, editorial */
+  --font-body: var(--font-hanken), system-ui, sans-serif;         /* Body — refined, highly readable */
+  --font-metrics: var(--font-space-grotesk), system-ui, sans-serif; /* Numbers — geometric, tabular */
+  --font-data: var(--font-ibm-plex-mono), ui-monospace, monospace;  /* Code, IDs, technical data */
 }
 
 body {
@@ -109,12 +119,63 @@ body {
 
 /* Data-focused utilities */
 .metrics-container {
-  @apply bg-neutral-950/50 backdrop-blur-sm border border-neutral-900/50 rounded-xl;
+  position: relative;
+  border-radius: 1rem;
+  background:
+    linear-gradient(180deg, rgba(148, 163, 184, 0.06), rgba(2, 6, 23, 0.2)),
+    rgba(2, 6, 23, 0.5);
+  border: 1px solid rgba(148, 163, 184, 0.1);
+  backdrop-filter: blur(8px);
+  transition:
+    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+.metrics-container:hover {
+  transform: translateY(-4px);
+  border-color: rgba(59, 130, 246, 0.35);
+  box-shadow:
+    0 18px 40px -24px rgba(59, 130, 246, 0.45),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.04);
 }
 
 .data-card {
-  @apply bg-neutral-900/30 backdrop-blur border border-neutral-800/40 rounded-lg
-         transition-all duration-200 hover:border-neutral-700/50 hover:bg-neutral-900/40;
+  position: relative;
+  border-radius: 1rem;
+  background:
+    linear-gradient(180deg, rgba(148, 163, 184, 0.05), rgba(2, 6, 23, 0.15)),
+    rgba(15, 23, 42, 0.4);
+  border: 1px solid rgba(148, 163, 184, 0.1);
+  backdrop-filter: blur(10px);
+  transition:
+    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.4s ease,
+    box-shadow 0.4s ease;
+}
+.data-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(59, 130, 246, 0.4);
+  box-shadow:
+    0 24px 50px -28px rgba(59, 130, 246, 0.5),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+}
+
+/* Gradient hairline border wrapper */
+.gradient-border {
+  position: relative;
+  border-radius: 1rem;
+}
+.gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.5), rgba(6, 182, 212, 0.3), transparent 60%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
 }
 
 .chart-wrapper {
@@ -301,4 +362,128 @@ html {
          text-neutral-100 placeholder-neutral-400 focus:border-insight-cyan
          focus:ring-2 focus:ring-inset focus:ring-insight-cyan/50
          focus:bg-neutral-900 sm:text-base resize-y;
+}
+/* ============================================================================
+   ATMOSPHERE & MOTION LAYER — added for the landing redesign
+   ========================================================================== */
+
+/* Brand gradient text */
+.gradient-text {
+  background: linear-gradient(
+    100deg,
+    var(--brand-from) 0%,
+    var(--brand-via) 45%,
+    var(--brand-to) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Shimmering brand text (animated sheen across the gradient) */
+.text-shimmer {
+  background: linear-gradient(
+    100deg,
+    var(--brand-from) 0%,
+    #e6e9f0 25%,
+    var(--brand-to) 50%,
+    #e6e9f0 75%,
+    var(--brand-from) 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: text-shimmer 6s linear infinite;
+}
+@keyframes text-shimmer {
+  to { background-position: 200% center; }
+}
+
+/* Eyebrow / section kicker label */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  background: rgba(59, 130, 246, 0.08);
+  color: var(--insight-cyan);
+  font-family: var(--font-metrics);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* Aurora depth blobs for section backgrounds */
+.aurora {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(90px);
+  opacity: 0.5;
+  pointer-events: none;
+  will-change: transform;
+}
+.aurora-blue {
+  background: radial-gradient(circle at center, rgba(59, 130, 246, 0.55), transparent 70%);
+  animation: drift-a 18s ease-in-out infinite;
+}
+.aurora-cyan {
+  background: radial-gradient(circle at center, rgba(6, 182, 212, 0.45), transparent 70%);
+  animation: drift-b 22s ease-in-out infinite;
+}
+@keyframes drift-a {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(40px, -30px) scale(1.12); }
+}
+@keyframes drift-b {
+  0%, 100% { transform: translate(0, 0) scale(1.05); }
+  50% { transform: translate(-50px, 35px) scale(0.92); }
+}
+
+/* Grid texture with a soft radial fade */
+.grid-mask {
+  background-image:
+    linear-gradient(to right, rgba(148, 163, 184, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(148, 163, 184, 0.07) 1px, transparent 1px);
+  background-size: 48px 48px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 30%, transparent 75%);
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 30%, transparent 75%);
+}
+
+/* Floating motion for hovering cards / mockups */
+.float-slow { animation: float 7s ease-in-out infinite; }
+.float-slower { animation: float 9s ease-in-out infinite; }
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+/* Staggered entrance — apply .enter and set --enter-delay on children */
+@keyframes enter-up {
+  from { opacity: 0; transform: translateY(22px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.enter {
+  opacity: 0;
+  animation: enter-up 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: var(--enter-delay, 0ms);
+}
+
+/* Conic glow ring behind hero focal element */
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+.spin-slow { animation: spin-slow 24s linear infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .text-shimmer,
+  .aurora-blue,
+  .aurora-cyan,
+  .float-slow,
+  .float-slower,
+  .spin-slow { animation: none; }
+  .enter { opacity: 1; animation: none; }
 }

@@ -1,10 +1,44 @@
 import type { Metadata } from "next";
+import {
+  Bricolage_Grotesque,
+  Hanken_Grotesk,
+  Space_Grotesk,
+  IBM_Plex_Mono,
+} from "next/font/google";
 import "./globals.css";
 
+const bricolage = Bricolage_Grotesque({
+  variable: "--font-bricolage",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
+});
+
+const hanken = Hanken_Grotesk({
+  variable: "--font-hanken",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+
+const ibmPlexMono = IBM_Plex_Mono({
+  variable: "--font-ibm-plex-mono",
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  display: "swap",
+});
+
 export const metadata: Metadata = {
-  title: "Caveat Vault — Triple-Lock Security Console",
+  title: "Filnevo — Automate Your BIR Tax Compliance",
   description:
-    "Classified-document dark console for the Caveat Triple-Lock Vault System.",
+    "From zero-entry document capture to automated BIR form filling, Filnevo delivers accurate, on-time tax filings — saving you hours every month.",
 };
 
 export default function RootLayout({
@@ -15,7 +49,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className="h-full antialiased"
+      className={`${bricolage.variable} ${hanken.variable} ${spaceGrotesk.variable} ${ibmPlexMono.variable} h-full antialiased`}
     >
       <body className="min-h-full">{children}</body>
     </html>
