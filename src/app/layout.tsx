@@ -1,29 +1,44 @@
 import type { Metadata } from "next";
-import { DM_Serif_Display, IBM_Plex_Mono, Syne } from "next/font/google";
+import {
+  Bricolage_Grotesque,
+  Hanken_Grotesk,
+  Space_Grotesk,
+  IBM_Plex_Mono,
+} from "next/font/google";
 import "./globals.css";
 
-const dmSerif = DM_Serif_Display({
-  variable: "--font-dm-serif",
-  weight: "400",
+const bricolage = Bricolage_Grotesque({
+  variable: "--font-bricolage",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
+});
+
+const hanken = Hanken_Grotesk({
+  variable: "--font-hanken",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
 });
 
 const ibmPlexMono = IBM_Plex_Mono({
   variable: "--font-ibm-plex-mono",
+  subsets: ["latin"],
   weight: ["400", "500", "600"],
-  subsets: ["latin"],
-});
-
-const syne = Syne({
-  variable: "--font-syne",
-  weight: ["400", "600", "700", "800"],
-  subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Caveat Vault — Triple-Lock Security Console",
+  title: "Filnevo — Automate Your BIR Tax Compliance",
   description:
-    "Classified-document dark console for the Caveat Triple-Lock Vault System.",
+    "From zero-entry document capture to automated BIR form filling, Filnevo delivers accurate, on-time tax filings — saving you hours every month.",
 };
 
 export default function RootLayout({
@@ -34,7 +49,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${dmSerif.variable} ${ibmPlexMono.variable} ${syne.variable} h-full antialiased`}
+      className={`${bricolage.variable} ${hanken.variable} ${spaceGrotesk.variable} ${ibmPlexMono.variable} h-full antialiased`}
     >
       <body className="min-h-full">{children}</body>
     </html>

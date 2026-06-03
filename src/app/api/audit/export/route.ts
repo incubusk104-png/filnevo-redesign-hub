@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createMockSupabaseClient as createClient } from "@/mock/lib/supabase/server";
+import { createSupabaseClientFactory } from "@/lib/mocking/factories";
 
-// Mock implementations for Edge Runtime compatibility
+// Mock implementations for Edge Runtime compatibility (keep as fallback)
 const archiver = (format: string, options: any) => ({
   pipe: (stream: any) => ({}),
   append: (content: any, options: { name: string }) => ({}),
@@ -27,7 +27,7 @@ export const runtime = "edge";
 
 // GET /api/audit/export -> generate and download a ZIP file of audit data
 export async function GET(req: NextRequest) {
-  const supabase = await createClient();
+  const supabase = await createSupabaseClientFactory();
   if (!supabase) {
     return NextResponse.json({ ok: false, error: "supabase_unavailable" }, { status: 500 });
   }
@@ -137,7 +137,7 @@ ${ledgerEntries
     });
 
     // Set headers for file download
-    return new NextResponse(buffer, {
+    return new NextResponse(new Uint8Array(buffer), {
       headers: {
         "Content-Type": "application/zip",
         "Content-Disposition": `attachment; filename="caveat-vault-audit-${new Date()

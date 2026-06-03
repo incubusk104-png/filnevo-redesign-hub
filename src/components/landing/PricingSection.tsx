@@ -2,7 +2,7 @@ import { Button } from "@/components/shared/Button";
 
 export default function PricingSection() {
   return (
-    <section className="relative py-20 lg:py-24 overflow-hidden">
+    <section id="pricing" className="relative scroll-mt-20 py-20 lg:py-24 overflow-hidden">
       {/* Background - subtle metric chart pattern */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2260%22 height=%2260%22 viewBox=%220 0 60 60%22><rect width=%2260%22 height=%2260%22 fill=%22none%22/><path d=%22M10 30 Q20 10 30 30 T50 30%22 stroke=%22%231e293b%22 stroke-width=%220.5%22 opacity=%220.06%22 fill=%22none%22/></svg>')]"/>
@@ -11,12 +11,12 @@ export default function PricingSection() {
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">
-          <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl text-foreground mb-6 tracking-tight">
-            Choose Your Service Acceleration Plan
+          <span className="eyebrow">Pricing</span>
+          <h2 className="mt-5 font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6 tracking-tight">
+            Plans that scale with your <span className="gradient-text">filings</span>
           </h2>
           <p className="text-lg text-text-muted max-w-3xl mx-auto">
-            Flexible pricing for teams of all sizes. Every plan includes our precision
-            analytics and automation tools designed to measure and accelerate service delivery.
+            Flexible pricing for businesses of all sizes. Every plan includes our BIR compliance tools with progressive feature access.
           </p>
         </div>
 
@@ -24,7 +24,7 @@ export default function PricingSection() {
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
 
           {/* Free Tier */}
-          <article className="data-card p-8 hover:scale-[1.02] transition-transform duration-300 border border-neutral-800/30">
+          <article className="data-card p-8 border border-neutral-800/30">
             <div className="flex items-start gap-4 mb-6">
               <div className="flex-shrink-0 w-10 h-10 bg-neutral-800/20 rounded-xl flex items-center justify-center">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -35,10 +35,10 @@ export default function PricingSection() {
               </div>
               <div>
                 <h3 className="font-metrics text-xl text-neutral-100 font-semibold mb-2">
-                  Starter
+                  Free Sandbox
                 </h3>
                 <p className="text-text-muted text-sm">
-                  Perfect for individuals and small teams getting started
+                  Perfect for individuals getting started with BIR compliance
                 </p>
               </div>
             </div>
@@ -46,37 +46,37 @@ export default function PricingSection() {
             <div className="space-y-4">
               <div className="flex items-center space-x-3 text-text-muted">
                 <div className="w-2 h-2 bg-efficiency-green/50 rounded-full" />
-                <span>Up to 1K services/month</span>
+                <span>5 Document Scans/month</span>
               </div>
               <div className="flex items-center space-x-3 text-text-muted">
                 <div className="w-2 h-2 bg-efficiency-green/50 rounded-full" />
-                <span>Basic analytics dashboard</span>
+                <span>Zero-Entry Mobile Capture</span>
               </div>
               <div className="flex items-center space-x-3 text-text-muted">
                 <div className="w-2 h-2 bg-efficiency-green/50 rounded-full" />
-                <span>Community support</span>
+                <span>Dynamic BIR Deadline Countdown</span>
               </div>
               <div className="flex items-center space-x-3 text-text-muted">
                 <div className="w-2 h-2 bg-efficiency-green/50 rounded-full" />
-                <span>Email support (3-day response)</span>
+                <span>Community Support</span>
               </div>
             </div>
 
             <div className="mt-8 pt-4 border-t border-neutral-800/20">
               <div className="flex items-baseline mb-4">
                 <span className="font-metrics text-2xl text-foreground font-bold">
-                  $0
+                  ₱0
                 </span>
                 <span className="text-text-muted text-xs ml-2">/ month</span>
               </div>
-              <Button variant="outline" href="#cta">
+              <Button variant="outline" href="/login">
                 Get Started Free
               </Button>
             </div>
           </article>
 
-          {/* Professional Tier */}
-          <article className="data-card p-8 hover:scale-[1.02] transition-transform duration-300 border border-insight-cyan/30">
+          {/* Starter Tier */}
+          <article className="data-card p-8 border border-insight-cyan/30">
             <div className="flex items-start gap-4 mb-6">
               <div className="flex-shrink-0 w-10 h-10 bg-insight-cyan/10 rounded-xl flex items-center justify-center">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -87,10 +87,10 @@ export default function PricingSection() {
               </div>
               <div>
                 <h3 className="font-metrics text-xl text-insight-cyan font-semibold mb-2">
-                  Professional
+                  Starter Tier
                 </h3>
                 <p className="text-text-muted text-sm">
-                  Ideal for growing businesses and teams
+                  Ideal for freelancers and small businesses
                 </p>
               </div>
             </div>
@@ -98,41 +98,45 @@ export default function PricingSection() {
             <div className="space-y-4">
               <div className="flex items-center space-x-3 text-text-muted">
                 <div className="w-2 h-2 bg-efficiency-green/50 rounded-full" />
-                <span>Up to 10K services/month</span>
+                <span>50 Document Scans/month</span>
               </div>
               <div className="flex items-center space-x-3 text-text-muted">
                 <div className="w-2 h-2 bg-efficiency-green/50 rounded-full" />
-                <span>Advanced analytics & predictions</span>
+                <span>All Free Features Included</span>
               </div>
               <div className="flex items-center space-x-3 text-text-muted">
                 <div className="w-2 h-2 bg-efficiency-green/50 rounded-full" />
-                <span>Automated workflow optimizer</span>
+                <span>BIR 10-Second Auto-Fill (Unblurred)</span>
               </div>
               <div className="flex items-center space-x-3 text-text-muted">
                 <div className="w-2 h-2 bg-efficiency-green/50 rounded-full" />
-                <span>Priority email support</span>
+                <span>Sunday Night Tax Stress Digest</span>
               </div>
               <div className="flex items-center space-x-3 text-text-muted">
                 <div className="w-2 h-2 bg-efficiency-green/50 rounded-full" />
-                <span>99.9% uptime SLA</span>
+                <span>Shared Accountant Access Link</span>
+              </div>
+              <div className="flex items-center space-x-3 text-text-muted">
+                <div className="w-2 h-2 bg-efficiency-green/50 rounded-full" />
+                <span>Give 3/Get 3 Referral Engine</span>
               </div>
             </div>
 
             <div className="mt-8 pt-4 border-t border-neutral-800/20">
               <div className="flex items-baseline mb-4">
                 <span className="font-metrics text-2xl text-foreground font-bold">
-                  $49
+                  ₱299
                 </span>
                 <span className="text-text-muted text-xs ml-2">/ month</span>
               </div>
-              <Button variant="primary" href="#cta">
+              <Button variant="primary" href="/login">
                 Start Free Trial
               </Button>
             </div>
           </article>
 
-          {/* Business Tier */}
-          <article className="data-card p-8 hover:scale-[1.02] transition-transform duration-300 border border-velocity-blue/30">
+          {/* Business Pro Tier */}
+          <article className="data-card p-8 border border-velocity-blue/30">
             <div className="flex items-start gap-4 mb-6">
               <div className="flex-shrink-0 w-10 h-10 bg-velocity-blue/10 rounded-xl flex items-center justify-center">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -143,10 +147,10 @@ export default function PricingSection() {
               </div>
               <div>
                 <h3 className="font-metrics text-xl text-velocity-blue font-semibold mb-2">
-                  Business
+                  Business Pro
                 </h3>
                 <p className="text-text-muted text-sm">
-                  Built for established companies and departments
+                  Built for growing businesses with advanced needs
                 </p>
               </div>
             </div>
@@ -154,49 +158,45 @@ export default function PricingSection() {
             <div className="space-y-4">
               <div className="flex items-center space-x-3 text-text-muted">
                 <div className="w-2 h-2 bg-efficiency-green/50 rounded-full" />
-                <span>Up to 100K services/month</span>
+                <span>500 Document Scans/month</span>
               </div>
               <div className="flex items-center space-x-3 text-text-muted">
                 <div className="w-2 h-2 bg-efficiency-green/50 rounded-full" />
-                <span>Intelligent load balancer</span>
+                <span>All Starter Features Included</span>
               </div>
               <div className="flex items-center space-x-3 text-text-muted">
                 <div className="w-2 h-2 bg-efficiency-green/50 rounded-full" />
-                <span>Service performance predictor</span>
+                <span>WhatsApp Receipt Forwarding Bot</span>
               </div>
               <div className="flex items-center space-x-3 text-text-muted">
                 <div className="w-2 h-2 bg-efficiency-green/50 rounded-full" />
-                <span>24/7 priority support</span>
+                <span>Multi-Currency Ad-Spend Predictor</span>
               </div>
               <div className="flex items-center space-x-3 text-text-muted">
                 <div className="w-2 h-2 bg-efficiency-green/50 rounded-full" />
-                <span>Dedicated account manager</span>
+                <span>Real-Time Dual-Receipt Anti-Fraud Flag</span>
               </div>
               <div className="flex items-center space-x-3 text-text-muted">
                 <div className="w-2 h-2 bg-efficiency-green/50 rounded-full" />
-                <span>Custom integrations & API</span>
-              </div>
-              <div className="flex items-center space-x-3 text-text-muted">
-                <div className="w-2 h-2 bg-efficiency-green/50 rounded-full" />
-                <span>99.95% uptime SLA</span>
+                <span>Time-Restricted Cryptographic Vault Links</span>
               </div>
             </div>
 
             <div className="mt-8 pt-4 border-t border-neutral-800/20">
               <div className="flex items-baseline mb-4">
                 <span className="font-metrics text-2xl text-foreground font-bold">
-                  $149
+                  ₱799
                 </span>
                 <span className="text-text-muted text-xs ml-2">/ month</span>
               </div>
-              <Button variant="primary" href="#cta">
+              <Button variant="primary" href="/login">
                 Start Free Trial
               </Button>
             </div>
           </article>
 
-          {/* Enterprise Tier */}
-          <article className="data-card p-8 hover:scale-[1.02] transition-transform duration-300 border border-warning-amber/30">
+          {/* Agency Core Tier */}
+          <article className="data-card p-8 border border-warning-amber/30">
             <div className="flex items-start gap-4 mb-6">
               <div className="flex-shrink-0 w-10 h-10 bg-warning-amber/10 rounded-xl flex items-center justify-center">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -207,10 +207,10 @@ export default function PricingSection() {
               </div>
               <div>
                 <h3 className="font-metrics text-xl text-warning-amber font-semibold mb-2">
-                  Enterprise
+                  Agency Core
                 </h3>
                 <p className="text-text-muted text-sm">
-                  Custom solutions for large organizations
+                  For agencies managing multiple client portfolios
                 </p>
               </div>
             </div>
@@ -218,46 +218,38 @@ export default function PricingSection() {
             <div className="space-y-4">
               <div className="flex items-center space-x-3 text-text-muted">
                 <div className="w-2 h-2 bg-efficiency-green/50 rounded-full" />
-                <span>Unlimited services</span>
+                <span>5,000 Document Scans/month</span>
               </div>
               <div className="flex items-center space-x-3 text-text-muted">
                 <div className="w-2 h-2 bg-efficiency-green/50 rounded-full" />
-                <span>All features included</span>
+                <span>All Business Pro Features Included</span>
               </div>
               <div className="flex items-center space-x-3 text-text-muted">
                 <div className="w-2 h-2 bg-efficiency-green/50 rounded-full" />
-                <span>Collaborative service designer</span>
+                <span>Multi-Workspace Routing & Team Approvals</span>
               </div>
               <div className="flex items-center space-x-3 text-text-muted">
                 <div className="w-2 h-2 bg-efficiency-green/50 rounded-full" />
-                <span>Enterprise API gateway</span>
+                <span>Automated BIR Audit ZIP Export & Webhooks</span>
               </div>
               <div className="flex items-center space-x-3 text-text-muted">
                 <div className="w-2 h-2 bg-efficiency-green/50 rounded-full" />
-                <span>24/7 dedicated support</span>
+                <span>Role-Based Access Control (Owner/Admin/Buyer/CPA/Viewer)</span>
               </div>
               <div className="flex items-center space-x-3 text-text-muted">
                 <div className="w-2 h-2 bg-efficiency-green/50 rounded-full" />
-                <span>Custom SLAs available</span>
-              </div>
-              <div className="flex items-center space-x-3 text-text-muted">
-                <div className="w-2 h-2 bg-efficiency-green/50 rounded-full" />
-                <span>On-premise deployment</span>
-              </div>
-              <div className="flex items-center space-x-3 text-text-muted">
-                <div className="w-2 h-2 bg-efficiency-green/50 rounded-full" />
-                <span>Advanced security & compliance</span>
+                <span>Separate Internal Agency vs Client Portfolios</span>
               </div>
             </div>
 
             <div className="mt-8 pt-4 border-t border-neutral-800/20">
-              <div className="flex items-baseline">
-                <span className="font-metrics text-xl text-foreground font-bold">
-                  Custom
+              <div className="flex items-baseline mb-4">
+                <span className="font-metrics text-2xl text-foreground font-bold">
+                  ₱2,499
                 </span>
                 <span className="text-text-muted text-xs ml-2">/ month</span>
               </div>
-              <Button variant="outline" href="#cta">
+              <Button variant="primary" href="/login">
                 Contact Sales
               </Button>
             </div>
@@ -267,17 +259,16 @@ export default function PricingSection() {
         {/* Comparison Footer */}
         <div className="mt-16 text-center">
           <h3 className="font-heading text-2xl md:text-3xl text-foreground mb-6">
-            Ready to accelerate your service delivery?
+            Ready to automate your BIR tax compliance?
           </h3>
           <p className="text-text-muted max-w-2xl mx-auto mb-8">
-            Start optimizing your services today with our precision-engineered
-            platform designed for maximum speed and efficiency.
+            From solo freelancers to enterprise agencies, our platform scales with your needs while keeping your data secure and your filings accurate.
           </p>
           <div className="flex flex-col sm:flex-row sm:justify-center gap-4 sm:gap-6">
             <Button variant="outline" href="#features">
               Explore All Features
             </Button>
-            <Button variant="primary" href="#cta">
+            <Button variant="primary" href="/login">
               Get Started Free
             </Button>
           </div>

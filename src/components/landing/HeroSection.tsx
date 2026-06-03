@@ -1,153 +1,181 @@
+import type { CSSProperties } from "react";
 import { Button } from "@/components/shared/Button";
+import AnimatedCounter from "./AnimatedCounter";
+
+const delay = (ms: number) => ({ "--enter-delay": `${ms}ms` }) as CSSProperties;
+
+const trust = [
+  "No credit card required",
+  "BIR 1701Q · 2550M · 0605",
+  "RLS-secured workspaces",
+];
+
+const metrics = [
+  { value: 50, suffix: "K+", label: "Documents processed / month", color: "text-velocity-blue" },
+  { value: 10, suffix: "K+", label: "Hours saved on tax prep / month", color: "text-insight-cyan" },
+  { value: 99.9, suffix: "%", decimals: 1, label: "Extraction accuracy", color: "text-efficiency-green" },
+  { value: 99.95, suffix: "%", decimals: 2, label: "Platform uptime", color: "text-warning-amber" },
+];
+
+const formRows = [
+  { label: "Taxpayer TIN", value: "009-461-228-000" },
+  { label: "Return period", value: "May 2026" },
+  { label: "Gross sales", value: "₱1,284,500.00" },
+  { label: "Output VAT", value: "₱154,140.00" },
+];
 
 export default function HeroSection() {
   return (
-    <section className="relative min-h-[80vh] flex flex-col items-center justify-center overflow-hidden">
-      {/* Background pattern - subtle data flow visualization */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2260%22 height=%2260%22 viewBox=%220 0 60 60%22><rect width=%2260%22 height=%2260%22 fill=%22none%22/><path d=%22M30 0 L0 30 L30 60 L60 30 Z%22 stroke=%22%233b82f6%22 stroke-width=%220.5%22 opacity=%220.05%22/></svg>')]"/>
-        <div className="absolute inset-0 animate-data-flow" aria-hidden="true"></div>
+    <section className="relative isolate overflow-hidden">
+      {/* Atmosphere */}
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        <div className="grid-mask absolute inset-0" />
+        <div className="aurora aurora-blue absolute -left-24 -top-32 h-[440px] w-[440px]" />
+        <div className="aurora aurora-cyan absolute -right-20 top-24 h-[400px] w-[400px]" />
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-background" />
       </div>
 
-      {/* Content */}
-      <div className="relative z-10 flex flex-col items-center text-center space-y-8 max-w-4xl px-6 lg:px-8">
-        {/* Logomark with speed indicator */}
-        <div className="flex items-center justify-center space-x-4 mb-6">
-          <div className="w-12 h-12 bg-gradient-to-r from-velocity-blue/20 to-insight-cyan/20 rounded-xl flex items-center justify-center">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M4 4h2v2H4V4zm0 6h2v2H4v-2zm0 6h2v2H4v-2zm6-4h2v2h-2V6zm0 2h2v2h-2v-2zm0 2h2v2h-2v-2zm4-8h2v2h-2V6zm0 2h2v2h-2v-2zm0 2h2v2h-2v-2zm0 2h2v2h-2v-2zm-8 4h2v2h-2v-2zm0 2h2v2h-2v-2zm0 2h2v2h-2v-2zm4-6h2v2h-2V6zm0 2h2v2h-2v-2zm0 2h2v2h-2v-2zm0 2h2v2h-2v-2z" fill="%233b82f6" opacity="0.1"/>
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8 8-3.59 8-8 8zM13 10h-2V7h-2v3H7v2h3v3h2v-3h3v-2h-3z" fill="%233b82f6"/>
-            </svg>
+      <div className="mx-auto grid max-w-7xl gap-14 px-6 pb-20 pt-20 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-12 lg:px-8 lg:pb-28 lg:pt-28">
+        {/* Left — copy */}
+        <div>
+          <span className="eyebrow enter" style={delay(0)}>
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-insight-cyan opacity-75" />
+              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-insight-cyan" />
+            </span>
+            BIR-ready tax automation
+          </span>
+
+          <h1
+            className="enter mt-6 font-heading text-4xl font-extrabold leading-[1.05] tracking-tight text-foreground sm:text-5xl lg:text-[3.75rem]"
+            style={delay(80)}
+          >
+            Automate your{" "}
+            <span className="text-shimmer">BIR tax compliance</span>{" "}
+            end&nbsp;to&nbsp;end
+          </h1>
+
+          <p
+            className="enter mt-6 max-w-xl text-lg leading-relaxed text-text-muted"
+            style={delay(160)}
+          >
+            From zero-entry document capture to automated BIR form filling, Filnevo
+            delivers accurate, on-time filings — saving your team hours every month.
+          </p>
+
+          <div className="enter mt-9 flex flex-col gap-4 sm:flex-row" style={delay(240)}>
+            <Button variant="primary" size="lg" href="/login" className="shadow-lg shadow-velocity-blue/20">
+              Get Started Free
+            </Button>
+            <Button variant="outline" size="lg" href="#features">
+              Explore Features
+            </Button>
           </div>
-          <div>
-            <h2 className="text-2xl font-semibold text-foreground tracking-tight">
-              Accelerate Your Business Services
-            </h2>
-            <p className="mt-2 text-text-muted max-w-lg">
-              Purpose-built SaaS platform that helps small and large enterprises
-              deliver their services faster through intelligent automation,
-              real-time optimization, and seamless workflow orchestration.
-            </p>
-          </div>
+
+          <ul className="enter mt-10 flex flex-wrap items-center gap-x-6 gap-y-3" style={delay(320)}>
+            {trust.map((item) => (
+              <li key={item} className="flex items-center gap-2 text-sm text-text-faint">
+                <svg className="h-4 w-4 flex-shrink-0 text-efficiency-green" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M3 8.5l3 3 7-7" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                {item}
+              </li>
+            ))}
+          </ul>
         </div>
 
-        {/* Main Headline */}
-        <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl text-foreground mb-6 leading-tight">
-          Transform Service Delivery Speed
-        </h1>
-
-        {/* Sub-headline with metrics focus */}
-        <p className="text-lg text-text-muted max-w-2xl">
-          Measure, optimize, and accelerate every aspect of your service delivery
-          with precision analytics and automated workflow optimization.
-        </p>
-
-        {/* Key Metrics Row */}
-        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {/* Services Accelerated */}
-          <div className="metrics-container p-6 text-center">
-            <div className="flex items-center justify-center mb-3">
-              <div className="w-8 h-8 bg-velocity-blue/10 rounded-lg flex items-center justify-center">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M10 2a8 8 0 100 16 8 8 0 000-16zM10 0a10 10 0 100 20 10 10 0 000-20z" fill="none" stroke="%233b82f6" stroke-width="1.5"/>
-                  <path d="M10 6a2 2 0 110 4 2 2 0 010-4z" fill="%233b82f6"/>
-                  <path d="M4 10h2" stroke="%233b82f6" stroke-width="1.5" stroke-linecap="round"/>
-                  <path d="M14 10h2" stroke="%233b82f6" stroke-width="1.5" stroke-linecap="round"/>
-                  <path d="M10 4v2" stroke="%233b82f6" stroke-width="1.5" stroke-linecap="round"/>
-                  <path d="M10 14v2" stroke="%233b82f6" stroke-width="1.5" stroke-linecap="round"/>
-                </svg>
-              </div>
-            </div>
-            <h3 className="font-metrics text-3xl text-velocity-blue font-bold">
-              10K+
-            </h3>
-            <p className="mt-2 text-text-muted text-sm">
-              Services Accelerated
-            </p>
+        {/* Right — floating BIR auto-fill mock */}
+        <div className="enter relative" style={delay(260)}>
+          {/* glow ring */}
+          <div className="pointer-events-none absolute -inset-10 -z-10 opacity-60">
+            <div className="spin-slow absolute inset-0 rounded-full bg-[conic-gradient(from_0deg,transparent,rgba(59,130,246,0.25),transparent_40%,rgba(6,182,212,0.25),transparent)]" />
           </div>
 
-          {/* Time Saved */}
-          <div className="metrics-container p-6 text-center">
-            <div className="flex items-center justify-center mb-3">
-              <div className="w-8 h-8 bg-insight-cyan/10 rounded-lg flex items-center justify-center">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="10" cy="10" r="9" stroke="%2306b6d4" stroke-width="1.5"/>
-                  <path d="M10 2L10 6" stroke="%2306b6d4" stroke-width="2" stroke-linecap="round"/>
-                  <path d="M10 14L10 18" stroke="%2306b6d4" stroke-width="2" stroke-linecap="round"/>
-                  <path d="M2 10L6 10" stroke="%2306b6d4" stroke-width="2" stroke-linecap="round"/>
-                  <path d="M14 10L18 10" stroke="%2306b6d4" stroke-width="2" stroke-linecap="round"/>
-                  <path d="M5.41 5.41L7.5 7.5" stroke="%2306b6d4" stroke-width="2" stroke-linecap="round"/>
-                  <path d="M16.5 16.5L14.41 14.41" stroke="%2306b6d4" stroke-width="2" stroke-linecap="round"/>
-                  <path d="M7.5 7.5L5.41 5.41" stroke="%2306b6d4" stroke-width="2" stroke-linecap="round"/>
-                  <path d="M14.41 14.41L16.5 16.5" stroke="%2306b6d4" stroke-width="2" stroke-linecap="round"/>
-                </svg>
+          <div className="gradient-border float-slow rounded-2xl">
+            <div className="rounded-2xl bg-neutral-950/70 p-6 backdrop-blur-xl">
+              {/* window chrome */}
+              <div className="mb-5 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="h-2.5 w-2.5 rounded-full bg-alert-red/70" />
+                  <span className="h-2.5 w-2.5 rounded-full bg-warning-amber/70" />
+                  <span className="h-2.5 w-2.5 rounded-full bg-efficiency-green/70" />
+                </div>
+                <span className="badge badge-success">Filed in 8.2s</span>
+              </div>
+
+              <p className="font-data text-xs uppercase tracking-widest text-text-faint">
+                Form 2550M · Monthly VAT
+              </p>
+              <h3 className="mt-1 font-heading text-lg font-semibold text-foreground">
+                Auto-filled from 14 receipts
+              </h3>
+
+              <div className="mt-5 space-y-3">
+                {formRows.map((row, i) => (
+                  <div
+                    key={row.label}
+                    className="enter flex items-center justify-between rounded-lg border border-neutral-800/60 bg-neutral-900/40 px-4 py-3"
+                    style={delay(500 + i * 120)}
+                  >
+                    <span className="text-sm text-text-muted">{row.label}</span>
+                    <span className="font-metrics text-sm font-semibold tabular-nums text-foreground">
+                      {row.value}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              {/* mini bar chart */}
+              <div className="mt-6 flex items-end gap-1.5" aria-hidden="true">
+                {[38, 62, 45, 78, 56, 90, 70, 84, 60, 96].map((h, i) => (
+                  <div
+                    key={i}
+                    className="flex-1 rounded-t bg-gradient-to-t from-velocity-blue/30 to-insight-cyan/80"
+                    style={{ height: `${h}px` }}
+                  />
+                ))}
               </div>
             </div>
-            <h3 className="font-metrics text-3xl text-insight-cyan font-bold">
-              250K+
-            </h3>
-            <p className="mt-2 text-text-muted text-sm">
-              Hours Saved Monthly
-            </p>
           </div>
 
-          {/* Efficiency Gain */}
-          <div className="metrics-container p-6 text-center">
-            <div className="flex items-center justify-center mb-3">
-              <div className="w-8 h-8 bg-efficiency-green/10 rounded-lg flex items-center justify-center">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M2 10h16M2 10l4 4 6-6" stroke="%2310b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-            </div>
-            <h3 className="font-metrics text-3xl text-efficiency-green font-bold">
-              3x
-            </h3>
-            <p className="mt-2 text-text-muted text-sm">
-              Average Efficiency Gain
-            </p>
+          {/* floating mini cards */}
+          <div className="float-slower absolute -left-6 bottom-10 hidden rounded-xl border border-neutral-800/70 bg-neutral-950/80 px-4 py-3 backdrop-blur-xl sm:block">
+            <p className="font-metrics text-xl font-bold text-efficiency-green">99.9%</p>
+            <p className="text-xs text-text-faint">accuracy</p>
           </div>
-
-          {/* Uptime */}
-          <div className="metrics-container p-6 text-center">
-            <div className="flex items-center justify-center mb-3">
-              <div className="w-8 h-8 bg-warning-amber/10 rounded-lg flex items-center justify-center">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="10" cy="10" r="9" stroke="%23f59e0b" stroke-width="1.5"/>
-                  <path d="M12 8v4l2 2" stroke="%23f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-            </div>
-            <h3 className="font-metrics text-3xl text-warning-amber font-bold">
-              99.9%
-            </h3>
-            <p className="mt-2 text-text-muted text-sm">
-              Platform Uptime
-            </p>
+          <div className="float-slow absolute -right-4 -top-4 hidden rounded-xl border border-neutral-800/70 bg-neutral-950/80 px-4 py-3 backdrop-blur-xl sm:block">
+            <p className="font-metrics text-xl font-bold text-insight-cyan">10s</p>
+            <p className="text-xs text-text-faint">auto-fill</p>
           </div>
         </div>
+      </div>
 
-        {/* Call to Action */}
-        <div className="mt-12 flex flex-col sm:flex-row sm:justify-center gap-4 sm:gap-6">
-          <Button variant="outline" href="#features">
-            Explore Features
-          </Button>
-          <Button variant="primary" href="#cta">
-            Start Free Trial
-          </Button>
+      {/* Metrics band */}
+      <div className="relative mx-auto max-w-7xl px-6 pb-20 lg:px-8">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {metrics.map((m) => (
+            <div key={m.label} className="metrics-container p-6 text-center">
+              <AnimatedCounter
+                value={m.value}
+                suffix={m.suffix}
+                decimals={m.decimals ?? 0}
+                className={`font-metrics text-3xl font-bold tabular-nums ${m.color}`}
+              />
+              <p className="mt-2 text-sm text-text-muted">{m.label}</p>
+            </div>
+          ))}
         </div>
 
-        {/* Live Data Ticker (subtle motion indicator) */}
-        <div className="mt-16 flex items-center justify-center space-x-6 text-text-muted">
-          <div className="flex items-center space-x-2 animate-metric-pulse">
-            <div className="w-2 h-2 bg-velocity-blue rounded-full" />
-            <span className="text-xs font-metrics">Live: Processing 1,247 requests/sec</span>
-          </div>
-          <div className="w-1 h-[20px] bg-neutral-700/30" />
-          <div className="flex items-center space-x-2">
-            <span className="text-xs">Last optimized: 2m 14s ago</span>
-          </div>
+        {/* live ticker */}
+        <div className="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-text-faint">
+          <span className="flex items-center gap-2 text-xs font-metrics">
+            <span className="h-2 w-2 animate-pulse rounded-full bg-velocity-blue" />
+            Live · processing 1,247 receipts/sec
+          </span>
+          <span className="hidden h-4 w-px bg-neutral-700/50 sm:block" />
+          <span className="text-xs">Last filing 2m 14s ago</span>
         </div>
-      </section>
+      </div>
+    </section>
   );
 }
