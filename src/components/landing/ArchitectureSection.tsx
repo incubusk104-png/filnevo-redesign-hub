@@ -1,6 +1,6 @@
 export default function ArchitectureSection() {
   return (
-    <section className="relative py-20 lg:py-24 overflow-hidden">
+    <section id="architecture" className="relative scroll-mt-20 py-20 lg:py-24 overflow-hidden">
       {/* Background - subtle circuit/data flow pattern */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2260%22 height=%2260%22 viewBox=%220 0 60 60%22><rect width=%2260%22 height=%2260%22 fill=%22none%22/><path d=%22M0 30Q15 20 30 30T60 30%22 stroke=%22%231e293b%22 stroke-width=%220.5%22 opacity=%220.06%22 fill=%22none%22/></svg>')]"/>
@@ -10,8 +10,9 @@ export default function ArchitectureSection() {
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">
-          <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl text-foreground mb-6 tracking-tight">
-            Triple-Lock Security Architecture for BIR Tax Compliance
+          <span className="eyebrow">Security</span>
+          <h2 className="mt-5 font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6 tracking-tight">
+            <span className="gradient-text">Triple-Lock</span> security architecture
           </h2>
           <p className="text-lg text-text-muted max-w-3xl mx-auto">
             Bank-grade security with triple-layer protection ensuring absolute data isolation,

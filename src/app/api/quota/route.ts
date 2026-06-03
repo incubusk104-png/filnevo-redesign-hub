@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createSupabaseClientFactory } from "@/lib/mocking/factories";
 
+// Required by @cloudflare/next-on-pages: every non-static route must run on the
+// Edge Runtime, matching the other /api routes.
 export const runtime = "edge";
 
 // GET /api/quota?tenantId=... -> current quota snapshot (Lock 2 peek).

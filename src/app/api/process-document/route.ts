@@ -37,7 +37,9 @@ export async function POST(req: NextRequest) {
     assigned_model?: string;
   };
 
-  // Declare body in outer scope so it's accessible after try/catch
+  // Extract workspace_id from request if provided (for Agency Core features).
+  // Declared in the outer scope so it remains available in the catch block and
+  // in the final response below.
   let body: {
     tenantId?: string;
     increment?: number;
@@ -58,8 +60,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Extract workspace_id from request if provided (for Agency Core features)
-    // (body already declared above)
     try {
       body = await req.json();
     } catch {
@@ -97,9 +97,9 @@ export async function POST(req: NextRequest) {
     };
 
   } catch (error) {
-    console.error("Unexpected error in quota check:", error);
-    // Fallback to demo mode if Supabase is unavailable
-    // This would normally use a mock quota function, but we'll keep it simple
+    const fallbackId = body.tenantId ?? id;
+    console.error(`Unexpected error in quota check (client=${fallbackId}):`, error);
+    // Fallback to demo mode if Supabase is unavailable.
     quota = {
       allowed: true,
       used: 0,
@@ -132,18 +132,21 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  return NextResponse.json({
-    ok: true,
-    documentName: (body && body.documentName) ?? null,
-    quota,
-    // Include the assigned provider/model for transparency
-    ...(quota.assigned_provider && { assignedProvider: quota.assigned_provider }),
-    ...(quota.assigned_model && { assignedModel: quota.assigned_model })
-  }, {
-    headers: {
-      "X-RateLimit-Remaining": String(quota.remaining ?? 0),
-      ...(quota.assigned_provider && { "X-Assigned-Provider": quota.assigned_provider }),
-      ...(quota.assigned_model && { "X-Assigned-Model": quota.assigned_model })
+  return NextResponse.json(
+    {
+      ok: true,
+      documentName: body.documentName ?? null,
+      quota,
+      // Include the assigned provider/model for transparency
+      ...(quota.assigned_provider && { assignedProvider: quota.assigned_provider }),
+      ...(quota.assigned_model && { assignedModel: quota.assigned_model })
+    },
+    {
+      headers: {
+        "X-RateLimit-Remaining": String(quota.remaining ?? 0),
+        ...(quota.assigned_provider && { "X-Assigned-Provider": quota.assigned_provider }),
+        ...(quota.assigned_model && { "X-Assigned-Model": quota.assigned_model })
+      }
     }
-  });
+  );
 }

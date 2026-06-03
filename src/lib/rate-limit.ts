@@ -11,7 +11,10 @@ const trackIpCache = new Map<string, { count: number; resetTime: number }>();
  * Provides rate limiting and payload size protection
  */
 export async function middleware(req: NextRequest) {
-  const ip = req.headers.get('x-forwarded-for') ?? req.headers.get('x-real-ip') ?? 'anonymous';
+  const ip =
+    req.headers.get('x-forwarded-for')?.split(',')[0].trim() ||
+    req.headers.get('x-real-ip') ||
+    'anonymous';
   const currentTime = Date.now();
 
   // 1. Defend Against Payload Volumetric Attacks
@@ -86,8 +89,9 @@ export const rateLimit = () => {
  * This extracts a stable identifier from the request
  */
 export const clientId = (req: NextRequest): string => {
-  // Try to get user ID from auth headers
+  // Try to get user ID from auth headers or cookies if available
   const userId = req.headers.get('x-user-id') ||
+                req.cookies.get('user-id')?.value ||
                 req.headers.get('x-auth-user-id');
 
   if (userId) {
@@ -95,6 +99,9 @@ export const clientId = (req: NextRequest): string => {
   }
 
   // Fallback to IP-based identification
-  const ip = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'anonymous';
+  const ip =
+    req.headers.get('x-forwarded-for')?.split(',')[0].trim() ||
+    req.headers.get('x-real-ip') ||
+    'anonymous';
   return `ip:${ip}`;
 };

@@ -2,7 +2,7 @@ import { Button } from "@/components/shared/Button";
 
 export default function CTASection() {
   return (
-    <section className="relative py-20 lg:py-24 overflow-hidden">
+    <section id="cta" className="relative scroll-mt-20 py-20 lg:py-24 overflow-hidden">
       {/* Background - subtle data visualization pattern */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2260%22 height=%2260%22 viewBox=%220 0 60 60%22><rect width=%2260%22 height=%2260%22 fill=%22none%22/><path d=%22M10 10 Q20 30 30 10 T50 10%22 stroke=%22%231e293b%22 stroke-width=%220.5%22 opacity=%220.06%22 fill=%22none%22/></svg>')]"/>
@@ -10,22 +10,23 @@ export default function CTASection() {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 max-w-3xl mx-auto px-6 lg:px-8 text-center">
-        {/* Header with metric accent */}
-        <div className="flex items-center justify-center space-x-4 mb-6">
-          <div className="w-10 h-10 bg-velocity-blue/10 rounded-xl flex items-center justify-center">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M2 10h16M2 10l4 4 6-6" stroke="%233b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+      <div className="relative z-10 max-w-5xl mx-auto px-6 lg:px-8">
+       <div className="gradient-border overflow-hidden rounded-3xl">
+        <div className="relative rounded-3xl bg-neutral-950/70 px-6 py-16 text-center backdrop-blur-xl sm:px-12">
+          {/* atmospheric blobs inside the panel */}
+          <div className="pointer-events-none absolute inset-0 -z-10">
+            <div className="aurora aurora-blue absolute -left-10 -top-16 h-64 w-64" />
+            <div className="aurora aurora-cyan absolute -right-10 -bottom-16 h-64 w-64" />
           </div>
-          <h2 className="font-heading text-3xl md:text-4xl text-foreground mb-0">
-            Ready to Accelerate Your Service Delivery?
+
+          <span className="eyebrow">Get started</span>
+          <h2 className="mt-5 font-heading text-3xl md:text-5xl font-bold text-foreground tracking-tight">
+            Ready to file your <span className="gradient-text">next BIR return</span> in minutes?
           </h2>
-        </div>
 
         {/* Sub-headline */}
-        <p className="text-lg text-text-muted max-w-2xl mx-auto mb-10">
-          Join businesses measuring, optimizing, and accelerating their service delivery with precision analytics and intelligent automation
+        <p className="mt-6 text-lg text-text-muted max-w-2xl mx-auto mb-10">
+          Join businesses measuring, optimizing, and accelerating their BIR tax compliance with precision automation and intelligent document capture.
         </p>
 
         {/* Live metrics ticker */}
@@ -49,7 +50,7 @@ export default function CTASection() {
           <Button variant="outline" href="#features">
             Explore All Features
           </Button>
-          <Button variant="primary" href="#cta">
+          <Button variant="primary" href="/login">
             Start Free Trial
           </Button>
         </div>
@@ -83,6 +84,8 @@ export default function CTASection() {
             <span className="text-xs">24/7 expert support</span>
           </div>
         </div>
+       </div>
+      </div>
       </div>
     </section>
   );
