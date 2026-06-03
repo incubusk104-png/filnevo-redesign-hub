@@ -134,7 +134,7 @@ export default function HeroSection() {
           <Button variant="outline" href="#features">
             Explore Features
           </Button>
-          <Button variant="primary" href="#cta">
+          <Button variant="primary" href="/login">
             Start Free Trial
           </Button>
         </div>

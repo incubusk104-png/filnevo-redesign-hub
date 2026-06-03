@@ -2,7 +2,7 @@ import { Button } from "@/components/shared/Button";
 
 export default function PricingSection() {
   return (
-    <section className="relative py-20 lg:py-24 overflow-hidden">
+    <section id="pricing" className="relative scroll-mt-20 py-20 lg:py-24 overflow-hidden">
       {/* Background - subtle metric chart pattern */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2260%22 height=%2260%22 viewBox=%220 0 60 60%22><rect width=%2260%22 height=%2260%22 fill=%22none%22/><path d=%22M10 30 Q20 10 30 30 T50 30%22 stroke=%22%231e293b%22 stroke-width=%220.5%22 opacity=%220.06%22 fill=%22none%22/></svg>')]"/>
@@ -69,7 +69,7 @@ export default function PricingSection() {
                 </span>
                 <span className="text-text-muted text-xs ml-2">/ month</span>
               </div>
-              <Button variant="outline" href="#cta">
+              <Button variant="outline" href="/login">
                 Get Started Free
               </Button>
             </div>
@@ -125,7 +125,7 @@ export default function PricingSection() {
                 </span>
                 <span className="text-text-muted text-xs ml-2">/ month</span>
               </div>
-              <Button variant="primary" href="#cta">
+              <Button variant="primary" href="/login">
                 Start Free Trial
               </Button>
             </div>
@@ -189,7 +189,7 @@ export default function PricingSection() {
                 </span>
                 <span className="text-text-muted text-xs ml-2">/ month</span>
               </div>
-              <Button variant="primary" href="#cta">
+              <Button variant="primary" href="/login">
                 Start Free Trial
               </Button>
             </div>
@@ -257,7 +257,7 @@ export default function PricingSection() {
                 </span>
                 <span className="text-text-muted text-xs ml-2">/ month</span>
               </div>
-              <Button variant="outline" href="#cta">
+              <Button variant="outline" href="/login">
                 Contact Sales
               </Button>
             </div>
@@ -277,7 +277,7 @@ export default function PricingSection() {
             <Button variant="outline" href="#features">
               Explore All Features
             </Button>
-            <Button variant="primary" href="#cta">
+            <Button variant="primary" href="/login">
               Get Started Free
             </Button>
           </div>

@@ -2,9 +2,10 @@ name: CI
 
 on:
   push:
-    branches: [ "devin/1780026774-caveat-vault" ]
+    branches: [ "main", "master", "devin/1780026774-caveat-vault" ]
+  # Run on every merge request, regardless of the target branch, so the
+  # build/type-check gate runs before anything is merged or deployed.
   pull_request:
-    branches: [ "devin/1780026774-caveat-vault" ]
 
 permissions:
   contents: read

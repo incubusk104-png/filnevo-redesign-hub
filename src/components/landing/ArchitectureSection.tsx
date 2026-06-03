@@ -1,6 +1,6 @@
 export default function ArchitectureSection() {
   return (
-    <section className="relative py-20 lg:py-24 overflow-hidden">
+    <section id="architecture" className="relative scroll-mt-20 py-20 lg:py-24 overflow-hidden">
       {/* Background - subtle circuit/data flow pattern */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2260%22 height=%2260%22 viewBox=%220 0 60 60%22><rect width=%2260%22 height=%2260%22 fill=%22none%22/><path d=%22M0 30Q15 20 30 30T60 30%22 stroke=%22%231e293b%22 stroke-width=%220.5%22 opacity=%220.06%22 fill=%22none%22/></svg>')]"/>

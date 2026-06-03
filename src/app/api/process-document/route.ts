@@ -37,6 +37,16 @@ export async function POST(req: NextRequest) {
     assigned_model?: string;
   };
 
+  // Extract workspace_id from request if provided (for Agency Core features).
+  // Declared in the outer scope so it remains available in the catch block and
+  // in the final response below.
+  let body: {
+    tenantId?: string;
+    increment?: number;
+    documentName?: string;
+    workspaceId?: string;
+  } = {};
+
   try {
     const supabase = await createSupabaseClientFactory();
     const {
@@ -49,14 +59,6 @@ export async function POST(req: NextRequest) {
         { status: 401 },
       );
     }
-
-    // Extract workspace_id from request if provided (for Agency Core features)
-    let body: {
-      tenantId?: string;
-      increment?: number;
-      documentName?: string;
-      workspaceId?: string;
-    } = {};
 
     try {
       body = await req.json();
@@ -95,10 +97,9 @@ export async function POST(req: NextRequest) {
     };
 
   } catch (error) {
-    console.error("Unexpected error in quota check:", error);
-    // Fallback to demo mode if Supabase is unavailable
     const fallbackId = body.tenantId ?? id;
-    // This would normally use a mock quota function, but we'll keep it simple
+    console.error(`Unexpected error in quota check (client=${fallbackId}):`, error);
+    // Fallback to demo mode if Supabase is unavailable.
     quota = {
       allowed: true,
       used: 0,
