@@ -1,3 +1,4 @@
+import Navbar from "@/components/landing/Navbar";
 import HeroSection from "@/components/landing/HeroSection";
 import FeaturesSection from "@/components/landing/FeaturesSection";
 import ArchitectureSection from "@/components/landing/ArchitectureSection";
@@ -8,7 +9,8 @@ import Reveal from "@/components/landing/Reveal";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div id="top" className="min-h-screen bg-background text-foreground">
+      <Navbar />
       <HeroSection />
       <Reveal>
         <FeaturesSection />
