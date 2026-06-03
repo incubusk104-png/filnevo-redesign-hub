@@ -2,7 +2,7 @@ import { Button } from "@/components/shared/Button";
 
 export default function FeaturesSection() {
   return (
-    <section className="relative py-20 lg:py-24 overflow-hidden">
+    <section id="features" className="relative scroll-mt-20 py-20 lg:py-24 overflow-hidden">
       {/* Background - subtle data grid pattern */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22 viewBox=%220 0 40 40%22><rect width=%2240%22 height=%2240%22 fill=%22none%22/><path d=%22M0 20L40 20M20 0L20 40%22 stroke=%22%231e293b%22 stroke-width=%220.5%22 opacity=%220.08%22/></svg>')]"/>
@@ -208,7 +208,7 @@ export default function FeaturesSection() {
             <Button variant="outline" href="#pricing">
               See Pricing Plans
             </Button>
-            <Button variant="primary" href="#cta">
+            <Button variant="primary" href="/login">
               Get Started Free
             </Button>
           </div>
