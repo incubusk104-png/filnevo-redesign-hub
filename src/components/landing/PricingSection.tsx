@@ -1,4 +1,5 @@
 import { Button } from "@/components/shared/Button";
+import { UpgradeButton } from "@/components/landing/UpgradeButton";
 
 export default function PricingSection() {
   return (
@@ -129,9 +130,9 @@ export default function PricingSection() {
                 </span>
                 <span className="text-text-muted text-xs ml-2">/ month</span>
               </div>
-              <Button variant="primary" href="/login">
+              <UpgradeButton tier="starter" variant="primary">
                 Start Free Trial
-              </Button>
+              </UpgradeButton>
             </div>
           </article>
 
@@ -189,9 +190,9 @@ export default function PricingSection() {
                 </span>
                 <span className="text-text-muted text-xs ml-2">/ month</span>
               </div>
-              <Button variant="primary" href="/login">
+              <UpgradeButton tier="business_pro" variant="primary">
                 Start Free Trial
-              </Button>
+              </UpgradeButton>
             </div>
           </article>
 
@@ -249,9 +250,9 @@ export default function PricingSection() {
                 </span>
                 <span className="text-text-muted text-xs ml-2">/ month</span>
               </div>
-              <Button variant="primary" href="/login">
-                Contact Sales
-              </Button>
+              <UpgradeButton tier="agency_core" variant="primary">
+                Upgrade to Agency Core
+              </UpgradeButton>
             </div>
           </article>
         </div>
