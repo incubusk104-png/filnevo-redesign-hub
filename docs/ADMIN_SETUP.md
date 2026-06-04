@@ -80,6 +80,9 @@ SUPABASE_ANON_KEY=...
 SUPABASE_SERVICE_ROLE_KEY=...        # secret, server-only (admin routes)
 CEREBRAS_API_KEY=...                 # free-tier extraction
 OPENAI_API_KEY=...                   # paid-tier extraction (needs billing)
+PAYMONGO_SECRET_KEY=...              # billing — secret, server-only (see §10)
+PAYMONGO_WEBHOOK_SECRET=...          # billing — webhook HMAC secret (see §10)
+APP_URL=https://your-domain         # billing — base URL for checkout redirects
 ```
 
 > **OpenAI billing:** a valid key with no credit returns HTTP 429
@@ -139,7 +142,60 @@ explicit `monthly_scan_quota` is included in the same request.
 
 ---
 
-## 8. Build & deploy
+## 8. Billing — PayMongo (Phase 2)
+
+PH e-wallet billing via **PayMongo** (GCash / Maya / cards). Because PayMongo
+e-wallets do not support true card-style auto-recurring charges, this is a
+**renew-by-checkout** model: each period the user completes a hosted checkout,
+and the `payment.paid` webhook grants the next period. This is the standard
+pattern for PH SaaS.
+
+### 8.1 Migration
+
+`20260603000006_billing.sql` adds:
+- `user_profiles.current_period_end` — when the current paid period ends.
+- `payments` ledger — one row per checkout (`provider`, `provider_ref`,
+  `amount`, `status`, `tier`, `period_start/end`). `(provider, provider_ref)`
+  is unique so re-delivered webhooks are idempotent. RLS lets a user read only
+  their own rows; all writes go through the service role.
+
+Apply with `supabase db push` (idempotent — safe to re-run).
+
+### 8.2 Environment
+
+| Var | Purpose |
+|-----|---------|
+| `PAYMONGO_SECRET_KEY` | PayMongo secret key (`sk_test_…` / `sk_live_…`). Server-only. |
+| `PAYMONGO_WEBHOOK_SECRET` | Webhook signing secret used to verify `Paymongo-Signature`. |
+| `APP_URL` | Public base URL for building checkout success/cancel redirects. |
+
+> **Demo mode:** when `PAYMONGO_SECRET_KEY` is unset, `/api/billing/checkout`
+> returns a stubbed hosted URL (the local `/billing/success` page) and
+> `/api/billing/webhook` skips signature verification. The whole flow builds
+> and runs without any keys.
+
+### 8.3 Endpoints
+
+| Method | Path | Purpose |
+|--------|------|---------|
+| `POST` | `/api/billing/checkout` | Cookie-authed. Body `{ "tier": "starter" \| "business_pro" \| "agency_core" }`. Creates a PayMongo Checkout Session and returns `{ checkout_url }`; metadata carries `user_id` + `tier`. |
+| `POST` | `/api/billing/webhook` | PayMongo → us. Verifies the `Paymongo-Signature` HMAC, and on `payment.paid` sets `subscription_tier`, `monthly_scan_quota` (tier default), `subscription_status='active'`, resets the usage counter and stamps the new `current_period_end`. |
+
+### 8.4 Register the webhook
+
+In the PayMongo dashboard → **Developers → Webhooks**, add an endpoint:
+
+```
+https://<APP_URL>/api/billing/webhook
+```
+
+Subscribe to the `payment.paid` event, copy the generated signing secret into
+`PAYMONGO_WEBHOOK_SECRET`, and redeploy. The hosted checkout pages already
+offer GCash, Maya and card payments.
+
+---
+
+## 10. Build & deploy
 
 ```bash
 npm install
@@ -151,12 +207,15 @@ CI runs both `build` and the Cloudflare Pages build; both must be green.
 
 ---
 
-## 9. Known follow-ups (not in this phase)
+## 11. Known follow-ups (not in this phase)
 
 - **Real Supabase session wiring.** Login currently runs through mock clients;
   wire `@supabase/ssr` cookie sessions so production auth (and the admin token
   the `/admin` console sends) is fully live end-to-end.
-- **Billing (Phase 2).** PayMongo (PH: GCash/Maya/cards) first, then Stripe
-  (international). Webhooks should set `subscription_tier` + `monthly_scan_quota`.
+- **Billing — Stripe (international).** Phase 2 PayMongo (PH: GCash/Maya/cards)
+  is implemented (see §8). Next: add Stripe for international cards + true
+  card auto-recurring subscriptions.
+- **Renewal reminders.** Since PayMongo e-wallets are renew-by-checkout, send a
+  reminder as `current_period_end` approaches and downgrade lapsed users.
 - **International.** Add a `jurisdiction` concept + generic (non-BIR) categories,
   multi-currency, and RA 10173 / GDPR handling.
