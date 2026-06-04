@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createSupabaseClientFactory } from "@/lib/mocking/factories";
 import { applyEdgeGuard } from "@/lib/rate-limit";
-import { FREE_ASSIGNMENT } from "@/lib/ai/providers";
+import { FREE_ASSIGNMENT, type AiProvider, type ModelAssignment } from "@/lib/ai/providers";
+import { runExtraction, ProviderError } from "@/lib/ai/extract";
 
 // LOCK 1 runs at the edge, in front of the database.
 export const runtime = "edge";
@@ -50,6 +51,7 @@ export async function POST(req: NextRequest) {
     increment?: number;
     documentName?: string;
     workspaceId?: string;
+    text?: string;
   } = {};
 
   try {
@@ -138,11 +140,42 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  // --- Routed model call ---------------------------------------------------
+  // Quota is already committed, so only invoke the provider when document text
+  // is supplied. free -> Cerebras, paid -> OpenAI, per the assignment above.
+  let extraction: { content: string } | undefined;
+  const provider = quota.assigned_provider;
+  if (body.text && (provider === "cerebras" || provider === "openai")) {
+    const assignment: ModelAssignment = {
+      provider: provider as AiProvider,
+      model: quota.assigned_model ?? FREE_ASSIGNMENT.model,
+    };
+    try {
+      const result = await runExtraction(assignment, body.text);
+      extraction = { content: result.content };
+    } catch (err) {
+      const status = err instanceof ProviderError ? err.status : 502;
+      console.error("Provider extraction failed:", err);
+      return NextResponse.json(
+        {
+          ok: false,
+          lock: 0,
+          error: "provider_call_failed",
+          quota,
+          assignedProvider: quota.assigned_provider,
+          assignedModel: quota.assigned_model,
+        },
+        { status: status >= 400 && status < 600 ? status : 502 },
+      );
+    }
+  }
+
   return NextResponse.json(
     {
       ok: true,
       documentName: body.documentName ?? null,
       quota,
+      ...(extraction && { extraction }),
       // Include the assigned provider/model for transparency
       ...(quota.assigned_provider && { assignedProvider: quota.assigned_provider }),
       ...(quota.assigned_model && { assignedModel: quota.assigned_model })
