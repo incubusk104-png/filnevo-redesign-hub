@@ -10,46 +10,22 @@ interface UpgradeButtonProps {
   variant?: "primary" | "outline" | "secondary";
 }
 
-// Starts a PayMongo checkout for `tier` and redirects to the hosted page.
-// Unauthenticated callers (401) are sent to /login to sign in first.
+// Sends the customer to the QR Ph payment page for `tier`. That page generates
+// a PayMongo QR code to pay from GCash / Maya; unauthenticated callers are
+// redirected to /login from there.
 export function UpgradeButton({ tier, children, variant = "primary" }: UpgradeButtonProps) {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
-  async function startCheckout() {
+  function startPayment() {
     setLoading(true);
-    setError(null);
-    try {
-      const res = await fetch("/api/billing/checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ tier }),
-      });
-
-      if (res.status === 401) {
-        window.location.href = "/login";
-        return;
-      }
-
-      const data = (await res.json()) as { ok?: boolean; checkout_url?: string };
-      if (data.ok && data.checkout_url) {
-        window.location.href = data.checkout_url;
-        return;
-      }
-      setError("Could not start checkout. Please try again.");
-    } catch {
-      setError("Could not start checkout. Please try again.");
-    } finally {
-      setLoading(false);
-    }
+    window.location.href = `/billing/pay?tier=${tier}`;
   }
 
   return (
     <div>
-      <Button variant={variant} onClick={startCheckout} disabled={loading}>
-        {loading ? "Redirecting…" : children}
+      <Button variant={variant} onClick={startPayment} disabled={loading}>
+        {loading ? "Opening…" : children}
       </Button>
-      {error && <p className="mt-2 text-xs text-warning-amber">{error}</p>}
     </div>
   );
 }

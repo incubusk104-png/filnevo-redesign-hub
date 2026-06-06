@@ -5,18 +5,12 @@ import {
   verifyWebhookSignature,
 } from "@/lib/billing/paymongo";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { applyPaidUpgrade } from "@/lib/billing/upgrade";
 import { isDemoMode } from "@/lib/mode";
-import { defaultQuotaForTier, isSubscriptionTier } from "@/lib/tiers";
+import { isSubscriptionTier } from "@/lib/tiers";
 
 // Required by @cloudflare/next-on-pages: every non-static route runs on Edge.
 export const runtime = "edge";
-
-/** Add one calendar month to a date (UTC). */
-function addOneMonth(from: Date): Date {
-  const d = new Date(from);
-  d.setUTCMonth(d.getUTCMonth() + 1);
-  return d;
-}
 
 // POST /api/billing/webhook
 // PayMongo delivers events here. We verify the `Paymongo-Signature` HMAC, and on
@@ -53,7 +47,45 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: true, ignored: event.type || "unknown" });
   }
 
-  const { user_id: userId, tier } = event.metadata;
+  // Idempotency key / attribution anchor — QR Ph payments carry a payment
+  // intent id, hosted checkout carries a checkout session id.
+  const providerRef =
+    event.checkoutSessionId ??
+    event.paymentIntentId ??
+    event.paymentId ??
+    `evt_${Date.now()}`;
+  const amount = typeof event.amount === "number" ? event.amount / 100 : undefined;
+
+  // Demo mode (no Supabase): acknowledge without DB writes so the path is
+  // exercisable without a backend.
+  if (isDemoMode()) {
+    return NextResponse.json({
+      ok: true,
+      demo: true,
+      tier: event.metadata.tier,
+      user_id: event.metadata.user_id,
+    });
+  }
+
+  // Resolve buyer + tier. QR Ph payments may not echo metadata on the payment,
+  // so fall back to the pending ledger row keyed by provider_ref (written at
+  // checkout/QR creation).
+  let userId = event.metadata.user_id;
+  let tier: string | undefined = event.metadata.tier;
+  if (!userId || !isSubscriptionTier(tier)) {
+    const admin = createAdminClient();
+    const { data: pending } = await admin
+      .from("payments")
+      .select("user_id, tier")
+      .eq("provider", "paymongo")
+      .eq("provider_ref", providerRef)
+      .maybeSingle();
+    if (pending) {
+      userId = userId ?? (pending.user_id as string | undefined);
+      tier = isSubscriptionTier(tier) ? tier : (pending.tier as string | undefined);
+    }
+  }
+
   if (!userId || !isSubscriptionTier(tier) || tier === "free") {
     return NextResponse.json(
       { ok: false, error: "invalid_metadata" },
@@ -61,59 +93,17 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // Demo mode (no Supabase): acknowledge without DB writes so the path is
-  // exercisable without a backend.
-  if (isDemoMode()) {
-    return NextResponse.json({ ok: true, demo: true, tier, user_id: userId });
-  }
-
-  const now = new Date();
-  const periodEnd = addOneMonth(now);
-  const providerRef = event.checkoutSessionId ?? event.paymentId ?? `evt_${now.getTime()}`;
-  const amount = typeof event.amount === "number" ? event.amount / 100 : undefined;
-
-  const admin = createAdminClient();
-
-  // 3. Upgrade the user: tier, quota (tier default), active status, new period.
-  const { error: profileError } = await admin
-    .from("user_profiles")
-    .update({
-      subscription_tier: tier,
-      monthly_scan_quota: defaultQuotaForTier(tier),
-      subscription_status: "active",
-      scans_used_this_period: 0,
-      period_started_at: now.toISOString(),
-      current_period_end: periodEnd.toISOString(),
-    })
-    .eq("id", userId);
-
-  if (profileError) {
-    console.error("webhook_profile_update_failed:", profileError.message);
+  // Upgrade the user + settle the ledger (idempotent on provider_ref).
+  let periodEnd: string;
+  try {
+    ({ periodEnd } = await applyPaidUpgrade({ userId, tier, providerRef, amount }));
+  } catch (err) {
+    console.error("webhook_upgrade_failed:", (err as Error).message);
     return NextResponse.json(
       { ok: false, error: "profile_update_failed" },
       { status: 500 },
     );
   }
 
-  // 4. Record/settle the payment in the ledger (idempotent on provider_ref).
-  const { error: ledgerError } = await admin.from("payments").upsert(
-    {
-      user_id: userId,
-      provider: "paymongo",
-      provider_ref: providerRef,
-      ...(amount !== undefined ? { amount } : {}),
-      currency: "PHP",
-      status: "paid",
-      tier,
-      period_start: now.toISOString(),
-      period_end: periodEnd.toISOString(),
-    },
-    { onConflict: "provider,provider_ref" },
-  );
-
-  if (ledgerError) {
-    console.error("webhook_ledger_upsert_failed:", ledgerError.message);
-  }
-
-  return NextResponse.json({ ok: true, tier, current_period_end: periodEnd.toISOString() });
+  return NextResponse.json({ ok: true, tier, current_period_end: periodEnd });
 }

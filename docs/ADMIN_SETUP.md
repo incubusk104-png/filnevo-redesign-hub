@@ -179,9 +179,26 @@ Apply with `supabase db push` (idempotent — safe to re-run).
 | Method | Path | Purpose |
 |--------|------|---------|
 | `POST` | `/api/billing/checkout` | Cookie-authed. Body `{ "tier": "starter" \| "business_pro" \| "agency_core" }`. Creates a PayMongo Checkout Session and returns `{ checkout_url }`; metadata carries `user_id` + `tier`. |
-| `POST` | `/api/billing/webhook` | PayMongo → us. Verifies the `Paymongo-Signature` HMAC, and on `payment.paid` sets `subscription_tier`, `monthly_scan_quota` (tier default), `subscription_status='active'`, resets the usage counter and stamps the new `current_period_end`. |
+| `POST` | `/api/billing/qrph` | Cookie-authed. Body `{ "tier": … }`. Generates a dynamic **QR Ph** code via PayMongo and returns `{ qr_image_url (base64 PNG data URI), payment_intent_id, amount, expires_at }`; intent metadata carries `user_id` + `tier`, and a `pending` ledger row is written keyed by the payment intent id. |
+| `GET` | `/api/billing/qrph/status?id=<pi>` | Cookie-authed. Polls the Payment Intent status. On `succeeded` it applies the upgrade (idempotent) so access is granted even if the webhook is unregistered. Returns `{ status, paid }`. |
+| `POST` | `/api/billing/webhook` | PayMongo → us. Verifies the `Paymongo-Signature` HMAC, and on `payment.paid` sets `subscription_tier`, `monthly_scan_quota` (tier default), `subscription_status='active'`, resets the usage counter and stamps the new `current_period_end`. QR Ph payments are attributed via metadata or, failing that, the pending ledger row keyed by `payment_intent_id`. |
 
-### 8.4 Register the webhook
+### 8.4 QR Ph (pay from GCash / Maya)
+
+The pricing/upgrade buttons send the customer to **`/billing/pay?tier=<tier>`**,
+which calls `/api/billing/qrph` and renders the PayMongo-generated QR Ph code
+with a **Download QR** button and a step-by-step guide. The customer pays by
+scanning the code — or uploading the saved image from their gallery — in GCash,
+Maya, or any InstaPay-enabled bank/e-wallet app. The page polls
+`/api/billing/qrph/status` and redirects to `/billing/success` once paid; the
+plan upgrade is applied server-side.
+
+Requirements: **QR Ph must be enabled on your PayMongo account** and
+`PAYMONGO_SECRET_KEY` must be set. Without the key the flow runs in demo mode
+(placeholder QR, no charge). QR codes are single-use and expire after 30 minutes;
+the page offers to regenerate an expired code.
+
+### 8.5 Register the webhook
 
 In the PayMongo dashboard → **Developers → Webhooks**, add an endpoint:
 
@@ -189,9 +206,11 @@ In the PayMongo dashboard → **Developers → Webhooks**, add an endpoint:
 https://<APP_URL>/api/billing/webhook
 ```
 
-Subscribe to the `payment.paid` event, copy the generated signing secret into
+Subscribe to the `payment.paid` event (QR Ph also emits `payment.failed` and
+`qrph.expired`), copy the generated signing secret into
 `PAYMONGO_WEBHOOK_SECRET`, and redeploy. The hosted checkout pages already
-offer GCash, Maya and card payments.
+offer GCash, Maya and card payments. The QR Ph status poll also confirms
+payments, so the webhook is recommended but not strictly required for upgrades.
 
 ---
 
