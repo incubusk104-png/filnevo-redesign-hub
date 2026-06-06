@@ -1,5 +1,7 @@
 import {
   createCheckoutSession,
+  createQrphPayment,
+  getPaymentIntentStatus,
   parseSignatureHeader,
   parseWebhookEvent,
   verifyWebhookSignature,
@@ -101,9 +103,45 @@ describe("paymongo", () => {
         type: "payment.paid",
         paymentId: "pay_123",
         checkoutSessionId: "cs_abc",
+        paymentIntentId: undefined,
         amount: 29900,
         metadata: { user_id: "u-1", tier: "starter" },
       });
+    });
+
+    it("extracts the payment_intent_id (QR Ph payments)", () => {
+      const payload = {
+        data: {
+          attributes: {
+            type: "payment.paid",
+            data: {
+              id: "pay_456",
+              attributes: { amount: 249900, payment_intent_id: "pi_xyz" },
+            },
+          },
+        },
+      };
+      expect(parseWebhookEvent(payload).paymentIntentId).toBe("pi_xyz");
+    });
+  });
+
+  describe("createQrphPayment (demo)", () => {
+    it("returns a placeholder QR when no secret key is set", async () => {
+      delete process.env.PAYMONGO_SECRET_KEY;
+      const qr = await createQrphPayment({ tier: "agency_core", userId: "u-1" });
+      expect(qr.demo).toBe(true);
+      expect(qr.paymentIntentId).toContain("demo_pi_");
+      expect(qr.qrImageUrl).toContain("data:image/svg+xml");
+      expect(qr.amount).toBe(2499);
+      expect(typeof qr.expiresAt).toBe("string");
+    });
+  });
+
+  describe("getPaymentIntentStatus (demo)", () => {
+    it("reports a pending status without a secret key", async () => {
+      delete process.env.PAYMONGO_SECRET_KEY;
+      const res = await getPaymentIntentStatus("demo_pi_x");
+      expect(res).toEqual({ status: "awaiting_next_action", demo: true });
     });
   });
 

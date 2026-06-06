@@ -146,6 +146,192 @@ export async function createCheckoutSession(
 }
 
 // ---------------------------------------------------------------------------
+// QR Ph (dynamic) — generate a single-use QR code the customer scans/uploads in
+// GCash, Maya or any InstaPay app. Flow (PayMongo Payment Intent workflow):
+//   1. create a Payment Intent (amount, metadata) allowing "qrph"
+//   2. create a `qrph` Payment Method
+//   3. attach it — the response carries the QR image at
+//      `next_action.code.image_url` (a base64 PNG data URI)
+// PayMongo confirms payment with a `payment.paid` webhook (handled elsewhere);
+// the status can also be polled via `getPaymentIntentStatus`.
+// ---------------------------------------------------------------------------
+
+export interface QrphPayment {
+  /** PayMongo Payment Intent id (pi_...) — `demo_pi_...` in demo mode. */
+  paymentIntentId: string;
+  /** Base64 PNG data URI of the QR Ph code — render directly in an <img>. */
+  qrImageUrl: string;
+  /** Amount in PHP (whole pesos). */
+  amount: number;
+  /** Payment Intent status (e.g. `awaiting_next_action`). */
+  status: string;
+  /** ISO timestamp when the QR expires (default 30 min from generation). */
+  expiresAt: string;
+  /** True when this was stubbed because no secret key is set. */
+  demo: boolean;
+}
+
+export interface CreateQrphArgs {
+  tier: SubscriptionTier;
+  userId: string;
+  email?: string;
+}
+
+/** Default QR Ph validity window (PayMongo default is 30 minutes). */
+const QRPH_EXPIRY_SECONDS = 30 * 60;
+
+/** A tiny inline-SVG placeholder QR shown in demo mode (no PayMongo key). */
+const DEMO_QR_DATA_URI =
+  "data:image/svg+xml;utf8," +
+  encodeURIComponent(
+    `<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240"><rect width="240" height="240" fill="#0b1220"/><rect x="24" y="24" width="192" height="192" fill="none" stroke="#2563eb" stroke-width="4" rx="12"/><text x="120" y="118" fill="#e2e8f0" font-family="monospace" font-size="18" text-anchor="middle">DEMO QR</text><text x="120" y="144" fill="#64748b" font-family="monospace" font-size="11" text-anchor="middle">no PayMongo key</text></svg>`,
+  );
+
+/** Normalize PayMongo's QR string into a usable <img> src (data URI). */
+function toQrDataUri(imageUrl: string): string {
+  return imageUrl.startsWith("data:")
+    ? imageUrl
+    : `data:image/png;base64,${imageUrl}`;
+}
+
+/**
+ * Generate a dynamic QR Ph code for `tier`. The Payment Intent carries
+ * `user_id` + `tier` in metadata so the webhook can attribute the payment. In
+ * demo mode (no secret key) a placeholder QR is returned so the UI still works.
+ */
+export async function createQrphPayment(
+  args: CreateQrphArgs,
+): Promise<QrphPayment> {
+  const { tier, userId } = args;
+  const meta = TIERS[tier];
+  const amountCentavos = Math.round(meta.pricePhp * 100);
+  const expiresAt = new Date(Date.now() + QRPH_EXPIRY_SECONDS * 1000).toISOString();
+
+  if (!isPaymongoConfigured()) {
+    return {
+      paymentIntentId: `demo_pi_${tier}_${Date.now()}`,
+      qrImageUrl: DEMO_QR_DATA_URI,
+      amount: meta.pricePhp,
+      status: "awaiting_next_action",
+      expiresAt,
+      demo: true,
+    };
+  }
+
+  const secret = process.env.PAYMONGO_SECRET_KEY as string;
+  const auth = btoa(`${secret}:`);
+  const headers = {
+    Authorization: `Basic ${auth}`,
+    "Content-Type": "application/json",
+  };
+
+  // 1. Create the Payment Intent (allowing qrph), with attribution metadata.
+  const intentRes = await fetch(`${PAYMONGO_API}/payment_intents`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify({
+      data: {
+        attributes: {
+          amount: amountCentavos,
+          currency: "PHP",
+          payment_method_allowed: ["qrph"],
+          description: `Filnevo ${meta.label} subscription`,
+          metadata: { user_id: userId, tier },
+        },
+      },
+    }),
+  });
+  if (!intentRes.ok) {
+    const detail = await intentRes.text();
+    throw new Error(`paymongo_qrph_intent_failed: ${intentRes.status} ${detail}`);
+  }
+  const intentJson = (await intentRes.json()) as {
+    data?: { id?: string; attributes?: { client_key?: string } };
+  };
+  const paymentIntentId = intentJson.data?.id;
+  const clientKey = intentJson.data?.attributes?.client_key;
+  if (!paymentIntentId || !clientKey) {
+    throw new Error("paymongo_qrph_intent_missing_fields");
+  }
+
+  // 2. Create a qrph Payment Method.
+  const pmRes = await fetch(`${PAYMONGO_API}/payment_methods`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify({ data: { attributes: { type: "qrph" } } }),
+  });
+  if (!pmRes.ok) {
+    const detail = await pmRes.text();
+    throw new Error(`paymongo_qrph_pm_failed: ${pmRes.status} ${detail}`);
+  }
+  const pmJson = (await pmRes.json()) as { data?: { id?: string } };
+  const paymentMethodId = pmJson.data?.id;
+  if (!paymentMethodId) throw new Error("paymongo_qrph_pm_missing_id");
+
+  // 3. Attach the Payment Method — the QR image comes back in next_action.
+  const attachRes = await fetch(
+    `${PAYMONGO_API}/payment_intents/${paymentIntentId}/attach`,
+    {
+      method: "POST",
+      headers,
+      body: JSON.stringify({
+        data: { attributes: { payment_method: paymentMethodId, client_key: clientKey } },
+      }),
+    },
+  );
+  if (!attachRes.ok) {
+    const detail = await attachRes.text();
+    throw new Error(`paymongo_qrph_attach_failed: ${attachRes.status} ${detail}`);
+  }
+  const attachJson = (await attachRes.json()) as {
+    data?: {
+      attributes?: {
+        status?: string;
+        next_action?: { code?: { image_url?: string } };
+      };
+    };
+  };
+  const attrs = attachJson.data?.attributes;
+  const imageUrl = attrs?.next_action?.code?.image_url;
+  if (!imageUrl) throw new Error("paymongo_qrph_missing_qr");
+
+  return {
+    paymentIntentId,
+    qrImageUrl: toQrDataUri(imageUrl),
+    amount: meta.pricePhp,
+    status: attrs?.status ?? "awaiting_next_action",
+    expiresAt,
+    demo: false,
+  };
+}
+
+/**
+ * Fetch the current status of a Payment Intent (for polling QR Ph payments).
+ * `succeeded` means the customer has paid. Demo mode reports a stable pending
+ * status so the UI can render without a backend.
+ */
+export async function getPaymentIntentStatus(
+  paymentIntentId: string,
+): Promise<{ status: string; demo: boolean }> {
+  if (!isPaymongoConfigured()) {
+    return { status: "awaiting_next_action", demo: true };
+  }
+  const secret = process.env.PAYMONGO_SECRET_KEY as string;
+  const auth = btoa(`${secret}:`);
+  const res = await fetch(`${PAYMONGO_API}/payment_intents/${paymentIntentId}`, {
+    headers: { Authorization: `Basic ${auth}` },
+  });
+  if (!res.ok) {
+    const detail = await res.text();
+    throw new Error(`paymongo_intent_status_failed: ${res.status} ${detail}`);
+  }
+  const json = (await res.json()) as {
+    data?: { attributes?: { status?: string } };
+  };
+  return { status: json.data?.attributes?.status ?? "unknown", demo: false };
+}
+
+// ---------------------------------------------------------------------------
 // Webhook signature verification.
 //
 // PayMongo signs each delivery with a `Paymongo-Signature` header shaped like:
@@ -225,6 +411,7 @@ export interface PaymongoEvent {
   type: string; // e.g. "payment.paid"
   paymentId?: string;
   checkoutSessionId?: string;
+  paymentIntentId?: string;
   amount?: number; // centavos
   metadata: { user_id?: string; tier?: string };
 }
@@ -260,6 +447,7 @@ export function parseWebhookEvent(payload: unknown): PaymongoEvent {
     type: event?.type ?? "",
     paymentId: resource?.id,
     checkoutSessionId: attrs?.checkout_session_id,
+    paymentIntentId: attrs?.payment_intent_id,
     amount: attrs?.amount,
     metadata: {
       user_id: attrs?.metadata?.user_id,
