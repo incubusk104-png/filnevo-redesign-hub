@@ -1,4 +1,5 @@
 import { Button } from "@/components/shared/Button";
+import { Logo } from "@/components/shared/Logo";
 
 export default function Navbar() {
   return (
@@ -8,15 +9,8 @@ export default function Navbar() {
         className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6 lg:px-8"
       >
         {/* Brand */}
-        <a href="#top" className="flex items-center gap-2">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-r from-velocity-blue/20 to-insight-cyan/20">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 8h-2V7h-2v3H7v2h3v3h2v-3h3v-2h-3z" fill="#3b82f6" />
-            </svg>
-          </span>
-          <span className="font-heading text-lg font-bold tracking-tight gradient-text">
-            Filnevo
-          </span>
+        <a href="#top" className="flex items-center" aria-label="Filnevo home">
+          <Logo size={32} withWordmark />
         </a>
 
         {/* In-page nav links (anchors exist on the landing page) */}

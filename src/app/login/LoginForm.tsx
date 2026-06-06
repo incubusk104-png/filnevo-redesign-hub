@@ -10,12 +10,13 @@ import {
 } from "./actions";
 import { checkPassword } from "@/lib/auth/password";
 
+// Strength meter colours mapped to the Precision Metrics status palette.
 const METER_COLORS = [
-  "bg-ruby",
-  "bg-ruby",
-  "bg-amber-400",
-  "bg-sapphire",
-  "bg-emerald-400",
+  "bg-alert-red",
+  "bg-alert-red",
+  "bg-warning-amber",
+  "bg-insight-cyan",
+  "bg-efficiency-green",
 ];
 
 export function LoginForm() {
@@ -34,13 +35,13 @@ export function LoginForm() {
   const showMeter = showRules || password.length > 0;
 
   return (
-    <div className="mt-8 space-y-4">
+    <div className="mt-7 space-y-4">
       {/* Google OAuth */}
       <form action={googleAction}>
         <button
           type="submit"
           disabled={pending}
-          className="flex w-full items-center justify-center gap-2.5 rounded-lg border border-hairline bg-obsidian-600 px-4 py-2.5 font-nav text-sm font-semibold text-ink transition-colors hover:border-gold/60 disabled:opacity-50"
+          className="flex w-full items-center justify-center gap-2.5 rounded-md border border-neutral-700 bg-neutral-900/40 px-4 py-2.5 font-metrics text-sm font-medium text-neutral-100 transition-colors hover:border-neutral-600 hover:bg-neutral-800/40 disabled:opacity-50"
         >
           <GoogleIcon />
           {googlePending ? "Connecting…" : "Continue with Google"}
@@ -49,73 +50,72 @@ export function LoginForm() {
 
       <div className="flex items-center gap-3">
         <span className="h-px flex-1 bg-hairline" />
-        <span className="font-ledger text-[10px] uppercase tracking-[0.2em] text-ink-faint">
-          or use email
+        <span className="font-metrics text-[10px] uppercase tracking-[0.2em] text-text-faint">
+          or continue with email
         </span>
         <span className="h-px flex-1 bg-hairline" />
       </div>
 
       <form className="space-y-4">
         <label className="block">
-          <span className="font-ledger text-[10px] uppercase tracking-[0.2em] text-ink-faint">
-            Operator Email
+          <span className="font-metrics text-[11px] font-medium uppercase tracking-[0.16em] text-text-muted">
+            Email
           </span>
           <input
             name="email"
             type="email"
             required
             autoComplete="email"
-            className="mt-1 w-full rounded-lg border border-hairline bg-obsidian-600 px-3 py-2 font-ledger text-sm text-ink outline-none focus:border-gold/60"
-            placeholder="operator@filnevo.com"
+            className="form-input mt-1.5 text-sm"
+            placeholder="you@example.com"
           />
         </label>
 
         <label className="block">
-          <span className="font-ledger text-[10px] uppercase tracking-[0.2em] text-ink-faint">
-            Passphrase
+          <span className="font-metrics text-[11px] font-medium uppercase tracking-[0.16em] text-text-muted">
+            Password
           </span>
           <input
             name="password"
             type="password"
             required
             autoComplete="current-password"
-            minLength={6}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             onFocus={() => setShowRules(true)}
-            className="mt-1 w-full rounded-lg border border-hairline bg-obsidian-600 px-3 py-2 font-ledger text-sm text-ink outline-none focus:border-gold/60"
-            placeholder="••••••••"
+            className="form-input mt-1.5 text-sm"
+            placeholder="Enter your password"
           />
         </label>
 
-        {/* Strength meter + rules guidance (helps enrolment; guides to a
-            secure passphrase). */}
+        {/* Strength meter + rules guidance — steers new sign-ups toward a
+            secure password. */}
         {showMeter && (
-          <div className="space-y-2">
+          <div className="space-y-2 rounded-md border border-hairline bg-neutral-900/40 p-3">
             <div className="flex items-center gap-2">
               <div className="flex h-1.5 flex-1 gap-1">
                 {[0, 1, 2, 3].map((i) => (
                   <span
                     key={i}
                     className={`flex-1 rounded-full transition-colors ${
-                      i < strength.score ? METER_COLORS[strength.score] : "bg-hairline"
+                      i < strength.score ? METER_COLORS[strength.score] : "bg-neutral-700"
                     }`}
                   />
                 ))}
               </div>
-              <span className="font-ledger text-[10px] uppercase tracking-[0.2em] text-ink-dim">
+              <span className="font-metrics text-[10px] uppercase tracking-[0.18em] text-text-muted">
                 {strength.label}
               </span>
             </div>
-            <ul className="space-y-1">
+            <ul className="grid grid-cols-2 gap-x-3 gap-y-1">
               {strength.rules.map((rule) => (
-                <li key={rule.id} className="flex items-center gap-1.5 font-ledger text-[11px]">
+                <li key={rule.id} className="flex items-center gap-1.5 font-body text-[11px]">
                   {rule.met ? (
-                    <Check className="h-3 w-3 text-emerald-400" />
+                    <Check className="h-3 w-3 shrink-0 text-efficiency-green" />
                   ) : (
-                    <X className="h-3 w-3 text-ink-faint" />
+                    <X className="h-3 w-3 shrink-0 text-text-faint" />
                   )}
-                  <span className={rule.met ? "text-ink-dim" : "text-ink-faint"}>
+                  <span className={rule.met ? "text-neutral-300" : "text-text-faint"}>
                     {rule.label}
                   </span>
                 </li>
@@ -125,35 +125,35 @@ export function LoginForm() {
         )}
 
         {error && (
-          <p className="rounded-md border border-ruby/50 bg-ruby/10 px-3 py-2 font-ledger text-xs text-ruby">
+          <p className="rounded-md border border-alert-red/40 bg-alert-red/10 px-3 py-2 font-body text-xs text-alert-red">
             {error}
           </p>
         )}
         {notice && (
-          <p className="rounded-md border border-sapphire/50 bg-sapphire/10 px-3 py-2 font-ledger text-xs text-sapphire">
+          <p className="rounded-md border border-insight-cyan/40 bg-insight-cyan/10 px-3 py-2 font-body text-xs text-insight-cyan">
             {notice}
           </p>
         )}
 
-        <div className="flex gap-3 pt-2">
+        <div className="flex gap-3 pt-1">
           <button
             formAction={signInAction}
             disabled={pending}
-            className="flex-1 rounded-lg bg-gold px-4 py-2.5 font-nav text-sm font-semibold text-obsidian transition-opacity hover:opacity-90 disabled:opacity-50"
+            className="flex-1 rounded-md bg-velocity-blue px-4 py-2.5 font-metrics text-sm font-semibold text-neutral-50 transition-all hover:bg-velocity-blue/90 active:scale-[0.98] disabled:opacity-50"
           >
-            {signingIn ? "Unlocking…" : "Sign In"}
+            {signingIn ? "Signing in…" : "Sign In"}
           </button>
           <button
             formAction={signUpAction}
             disabled={pending}
-            className="flex-1 rounded-lg border border-sapphire/50 px-4 py-2.5 font-nav text-sm font-semibold text-sapphire transition-colors hover:bg-sapphire/10 disabled:opacity-50"
+            className="flex-1 rounded-md border border-neutral-700 bg-neutral-900/40 px-4 py-2.5 font-metrics text-sm font-semibold text-neutral-100 transition-all hover:border-insight-cyan/60 hover:text-insight-cyan active:scale-[0.98] disabled:opacity-50"
           >
-            {signingUp ? "Enrolling…" : "Enroll"}
+            {signingUp ? "Creating account…" : "Sign Up"}
           </button>
         </div>
 
-        <p className="flex items-center justify-center gap-1.5 pt-2 font-ledger text-[10px] uppercase tracking-[0.2em] text-ink-faint">
-          <Lock className="h-3 w-3" /> Triple-Lock · RLS-enforced session
+        <p className="flex items-center justify-center gap-1.5 pt-1 font-body text-[11px] text-text-faint">
+          <Lock className="h-3 w-3" /> Your connection is encrypted.
         </p>
       </form>
     </div>
