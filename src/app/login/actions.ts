@@ -7,7 +7,9 @@ import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { checkPassword } from "@/lib/auth/password";
 
-export type AuthState = { error?: string; notice?: string } | null;
+export type AuthState =
+  | { error?: string; notice?: string; redirectTo?: string }
+  | null;
 
 const credentialsSchema = z.object({
   email: z.string().trim().email("Enter a valid email address."),
@@ -91,11 +93,17 @@ export async function signInWithGoogle(
   const origin = await getOrigin();
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
-    options: { redirectTo: `${origin}/auth/callback?next=/` },
+    options: {
+      redirectTo: `${origin}/auth/callback?next=/`,
+      // Don't let supabase-js redirect server-side; we hand the URL back to the
+      // client to navigate. Redirecting to an external URL via Next's
+      // `redirect()` inside a Server Action 500s on the Cloudflare Edge runtime.
+      skipBrowserRedirect: true,
+    },
   });
   if (error) return { error: error.message };
   if (!data?.url) return { error: "Could not start Google sign-in." };
-  redirect(data.url);
+  return { redirectTo: data.url };
 }
 
 export async function signOut() {

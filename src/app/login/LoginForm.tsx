@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { Check, Lock, X } from "lucide-react";
 import {
   signIn,
@@ -26,6 +26,15 @@ export function LoginForm() {
 
   const [password, setPassword] = useState("");
   const [showRules, setShowRules] = useState(false);
+
+  // OAuth navigation happens client-side: the server action returns the Google
+  // authorization URL (redirecting to an external URL from within a Server
+  // Action 500s on the Cloudflare Edge runtime).
+  useEffect(() => {
+    if (googleState?.redirectTo) {
+      window.location.assign(googleState.redirectTo);
+    }
+  }, [googleState]);
 
   const error = signInState?.error ?? signUpState?.error ?? googleState?.error;
   const notice = signUpState?.notice;
