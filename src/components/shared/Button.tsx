@@ -20,19 +20,22 @@ export const Button = forwardRef<
 }, ref) => {
   const Component = (href || asChild ? "a" : "button") as React.ElementType;
 
-  const baseClasses = "inline-flex items-center justify-center gap-2 rounded-md font-metrics font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50";
+  const baseClasses = "btn-anim inline-flex items-center justify-center gap-2 rounded-md font-metrics font-medium transition-all duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 disabled:hover:translate-y-0";
 
   const variantClasses = {
     primary: `
-      bg-velocity-blue text-neutral-50 hover:bg-velocity-blue/90 focus:ring-velocity-blue/50
+      bg-velocity-blue text-neutral-50 shadow-sm hover:bg-velocity-blue/90 focus:ring-velocity-blue/50
+      hover:-translate-y-0.5 hover:shadow-lg hover:shadow-velocity-blue/30
       press-effect
     `,
     outline: `
-      border border-neutral-700 bg-neutral-900/30 text-neutral-100 hover:bg-neutral-800/30 hover:border-neutral-600 focus:ring-neutral-700/50
+      border border-neutral-700 bg-neutral-900/30 text-neutral-100 hover:bg-neutral-800/40 hover:border-velocity-blue/50 focus:ring-neutral-700/50
+      hover:-translate-y-0.5 hover:shadow-md hover:shadow-black/30
       press-effect
     `,
     secondary: `
-      bg-insight-cyan text-neutral-50 hover:bg-insight-cyan/90 focus:ring-insight-cyan/50
+      bg-insight-cyan text-neutral-50 shadow-sm hover:bg-insight-cyan/90 focus:ring-insight-cyan/50
+      hover:-translate-y-0.5 hover:shadow-lg hover:shadow-insight-cyan/30
       press-effect
     `
   };
