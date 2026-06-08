@@ -1,7 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { useActionState, useEffect, useState } from "react";
-import { ArrowLeft, Check, Lock, LogIn, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Lock, X } from "lucide-react";
 import {
   signIn,
   signInWithGoogle,
@@ -52,7 +53,7 @@ export function LoginForm({ signupMode = false }: { signupMode?: boolean }) {
         <button
           type="submit"
           disabled={pending}
-          className="flex w-full items-center justify-center gap-2.5 rounded-md border border-neutral-700 bg-neutral-900/40 px-4 py-2.5 font-metrics text-sm font-medium text-neutral-100 transition-colors hover:border-neutral-600 hover:bg-neutral-800/40 disabled:opacity-50"
+          className="btn-anim flex w-full items-center justify-center gap-2.5 rounded-md border border-neutral-700 bg-neutral-900/40 px-4 py-2.5 font-metrics text-sm font-medium text-neutral-100 transition-all duration-200 hover:-translate-y-0.5 hover:border-neutral-600 hover:bg-neutral-800/40 hover:shadow-md hover:shadow-black/30 disabled:pointer-events-none disabled:opacity-50"
         >
           <GoogleIcon />
           {googlePending ? "Connecting…" : "Continue with Google"}
@@ -146,43 +147,53 @@ export function LoginForm({ signupMode = false }: { signupMode?: boolean }) {
           </Notice>
         )}
 
-        <div className="flex gap-3 pt-1">
-          {/* Primary action for the current mode. The secondary control differs
-              by mode: sign-in offers Back (→ landing); sign-up offers Sign In,
-              which navigates to the dedicated sign-in page (/login). These reuse
-              the shared <Button> so they are identical to the navbar's
-              Sign In / Sign Up controls. */}
+        {/* Primary action for the current mode. */}
+        <div className="pt-1">
           <Button
             variant="primary"
-            size="sm"
             formAction={signupMode ? signUpAction : signInAction}
             disabled={pending}
-            className="flex-1"
+            className="group w-full"
           >
             {signupMode
               ? signingUp
                 ? "Creating account…"
-                : "Sign Up"
+                : "Create account"
               : signingIn
                 ? "Signing in…"
                 : "Sign In"}
+            {!pending && (
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+            )}
           </Button>
-          {signupMode ? (
-            <Button variant="outline" size="sm" href="/login" className="flex-1">
-              <LogIn className="h-4 w-4" />
-              Sign In
-            </Button>
-          ) : (
-            <Button variant="outline" size="sm" href="/" className="group flex-1">
-              <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
-              Back
-            </Button>
-          )}
         </div>
 
-        <p className="flex items-center justify-center gap-1.5 pt-1 font-body text-[11px] text-text-faint">
-          <Lock className="h-3 w-3" /> Your connection is encrypted.
+        {/* Instant mode switch — a client-side <Link> swaps to the other auth
+            screen without a full reload, so clicking "Sign in" / "Create an
+            account" lands you straight on that screen. */}
+        <p className="text-center font-body text-sm text-text-muted">
+          {signupMode ? "Already have an account? " : "New to Filnevo? "}
+          <Link
+            href={signupMode ? "/login" : "/login?mode=signup"}
+            prefetch
+            className="auth-toggle-link"
+          >
+            {signupMode ? "Sign in" : "Create an account"}
+          </Link>
         </p>
+
+        <div className="flex flex-col items-center gap-3 pt-1">
+          <Link
+            href="/"
+            className="group inline-flex items-center gap-1.5 font-metrics text-xs text-text-muted transition-colors hover:text-neutral-200"
+          >
+            <ArrowLeft className="h-3.5 w-3.5 transition-transform group-hover:-translate-x-0.5" />
+            Back to home
+          </Link>
+          <p className="flex items-center justify-center gap-1.5 font-body text-[11px] text-text-faint">
+            <Lock className="h-3 w-3" /> Your connection is encrypted.
+          </p>
+        </div>
       </form>
     </div>
   );
