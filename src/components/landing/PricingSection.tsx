@@ -36,6 +36,8 @@ interface Plan {
   extraMeta?: string[];
   features: string[];
   cta: Cta;
+  /** Short persuasive line under the CTA (conversion hook). */
+  hook?: string;
   highlight?: boolean;
   badge?: string;
 }
@@ -46,14 +48,16 @@ const SOLO_PLANS: Plan[] = [
     name: "Free",
     tier: "free",
     features: ["Mobile doc capture", "BIR deadline widget", "Gemini Flash (free tier)"],
-    cta: { kind: "link", href: "/login?mode=signup", label: "Start free" },
+    cta: { kind: "link", href: "/login?mode=signup", label: "Start for free" },
+    hook: "No card required",
   },
   {
     id: "starter",
     name: "Starter",
     tier: "starter",
     features: ["Auto-fill BIR view", "Digest email", "Accountant link", "Referral engine"],
-    cta: { kind: "checkout", tier: "starter", label: "Get Starter" },
+    cta: { kind: "checkout", tier: "starter", label: "Start automating" },
+    hook: "Cancel anytime",
   },
   {
     id: "business_pro",
@@ -62,7 +66,8 @@ const SOLO_PLANS: Plan[] = [
     badge: "Most popular",
     highlight: true,
     features: ["WhatsApp receipt bot", "Ad-spend predictor", "Anti-fraud flag", "Vault links"],
-    cta: { kind: "checkout", tier: "business_pro", label: "Get Business Pro" },
+    cta: { kind: "checkout", tier: "business_pro", label: "Scale your filings" },
+    hook: "Most businesses start here",
   },
   {
     id: "agency_core",
@@ -70,7 +75,8 @@ const SOLO_PLANS: Plan[] = [
     tier: "agency_core",
     extraMeta: ["5 seats"],
     features: ["All Pro features", "Multi-workspace", "Team approvals", "BIR ZIP export + webhooks"],
-    cta: { kind: "checkout", tier: "agency_core", label: "Get Agency Core" },
+    cta: { kind: "checkout", tier: "agency_core", label: "Grow your agency" },
+    hook: "Built to grow your margins",
   },
 ];
 
@@ -81,7 +87,8 @@ const TEAM_PLANS: Plan[] = [
     tier: "team_starter",
     extraMeta: ["Up to 3 seats"],
     features: ["All Starter features", "3 user seats", "Shared ledger view", "Admin role"],
-    cta: { kind: "checkout", tier: "team_starter", label: "Get Team Starter" },
+    cta: { kind: "checkout", tier: "team_starter", label: "Equip your team" },
+    hook: "3 seats included",
   },
   {
     id: "team_pro",
@@ -91,7 +98,8 @@ const TEAM_PLANS: Plan[] = [
     highlight: true,
     extraMeta: ["Up to 5 seats"],
     features: ["All Business Pro features", "5 user seats", "WhatsApp bot", "Anti-fraud flag"],
-    cta: { kind: "checkout", tier: "team_pro", label: "Get Team Pro" },
+    cta: { kind: "checkout", tier: "team_pro", label: "Power your team" },
+    hook: "Best value for teams",
   },
   {
     id: "agency_core_team",
@@ -99,7 +107,8 @@ const TEAM_PLANS: Plan[] = [
     tier: "agency_core_team",
     extraMeta: ["5+ seats (expandable)"],
     features: ["All Agency features", "Expandable seats", "Multi-workspace", "BIR ZIP + webhooks"],
-    cta: { kind: "checkout", tier: "agency_core_team", label: "Get Agency Core Team" },
+    cta: { kind: "checkout", tier: "agency_core_team", label: "Scale your agency" },
+    hook: "Add seats as you grow",
   },
   {
     id: "enterprise",
@@ -107,7 +116,8 @@ const TEAM_PLANS: Plan[] = [
     priceLabel: "Custom",
     extraMeta: ["Unlimited", "Unlimited seats"],
     features: ["Custom scan volume", "Dedicated infra", "SLA + support", "White-label option"],
-    cta: { kind: "sales", label: "Contact us" },
+    cta: { kind: "sales", label: "Talk to sales" },
+    hook: "Custom volume & SLA",
   },
 ];
 
@@ -144,19 +154,49 @@ function metaLines(plan: Plan): string[] {
   return [scans, ...(plan.extraMeta ?? [])].filter((x): x is string => Boolean(x));
 }
 
+// Trailing arrow that nudges right on hover (the button carries the `group`).
+function Arrow() {
+  return (
+    <svg
+      className="transition-transform duration-200 ease-out group-hover:translate-x-1 motion-reduce:transition-none"
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M5 12h14" />
+      <path d="m12 5 7 7-7 7" />
+    </svg>
+  );
+}
+
+// Every purchasable plan shares ONE button treatment so the monetised CTAs read
+// as a single, professional set. Free/Enterprise (non-purchase) use the quieter
+// outline so the buy actions stay the visual focus.
+const BUY_CTA =
+  "group w-full justify-center bg-gradient-to-r from-velocity-blue to-insight-cyan text-neutral-50 border-0 shadow-md shadow-velocity-blue/25 hover:shadow-lg hover:shadow-insight-cyan/30";
+const ALT_CTA = "group w-full justify-center";
+
 function CtaButton({ plan, period }: { plan: Plan; period: BillingPeriod }) {
   const { cta } = plan;
   if (cta.kind === "checkout") {
     return (
-      <UpgradeButton tier={cta.tier} period={period} variant={plan.highlight ? "primary" : "outline"}>
+      <UpgradeButton tier={cta.tier} period={period} variant="primary" className={BUY_CTA}>
         {cta.label}
+        <Arrow />
       </UpgradeButton>
     );
   }
   const href = cta.kind === "sales" ? SALES_HREF : cta.href;
   return (
-    <Button variant="outline" href={href} className="w-full">
+    <Button variant="outline" href={href} className={ALT_CTA}>
       {cta.label}
+      <Arrow />
     </Button>
   );
 }
@@ -199,6 +239,9 @@ function PlanCard({ plan, period }: { plan: Plan; period: BillingPeriod }) {
 
       <div className="mt-6">
         <CtaButton plan={plan} period={period} />
+        {plan.hook && (
+          <p className="mt-2.5 text-center text-xs text-text-muted">{plan.hook}</p>
+        )}
       </div>
     </article>
   );
