@@ -17,6 +17,8 @@ interface UpgradeButtonProps {
   seats?: number;
   /** Billing period. Carried into checkout as `?period=`. */
   period?: BillingPeriod;
+  /** Extra classes forwarded to the underlying Button (e.g. `w-full`). */
+  className?: string;
 }
 
 // Sends the customer toward the QR Ph payment page for `tier`. Visitors who
@@ -24,7 +26,7 @@ interface UpgradeButtonProps {
 // plan) so payment is never shown pre-auth — regardless of Google or email
 // sign in. The pay page re-checks auth too, so this is purely to avoid a flash
 // of the payment screen before the redirect.
-export function UpgradeButton({ tier, children, variant = "primary", seats, period }: UpgradeButtonProps) {
+export function UpgradeButton({ tier, children, variant = "primary", seats, period, className = "" }: UpgradeButtonProps) {
   const [loading, setLoading] = useState(false);
 
   async function startPayment() {
@@ -49,10 +51,8 @@ export function UpgradeButton({ tier, children, variant = "primary", seats, peri
   }
 
   return (
-    <div>
-      <Button variant={variant} onClick={startPayment} disabled={loading}>
-        {loading ? "Opening…" : children}
-      </Button>
-    </div>
+    <Button variant={variant} onClick={startPayment} disabled={loading} className={className}>
+      {loading ? "Opening…" : children}
+    </Button>
   );
 }
