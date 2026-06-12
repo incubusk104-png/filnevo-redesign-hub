@@ -30,14 +30,11 @@ Apply migrations, including `purchases`:
 supabase db push
 ```
 
-## Install dependency
+## Dependency note
 
-`BaseLayout` imports `@react-email/components`, so install it and update
-`package-lock.json` after pulling this change:
-
-```sh
-npm install @react-email/components
-```
+The reusable email layout is intentionally dependency-free and uses email-safe
+inline table markup so `npm ci` can use the existing lockfile without requiring a
+React Email package install.
 
 ## Edge Function secrets
 

@@ -17,7 +17,6 @@
         "@21st-sdk/node": "^0.1.1",
         "@21st-sdk/react": "^0.1.4",
         "@ai-sdk/react": "^3.0.195",
-        "@react-email/components": "^0.0.41",
         "@supabase/ssr": "^0.10.3",
         "@supabase/supabase-js": "^2.106.2",
         "ai": "^6.0.193",

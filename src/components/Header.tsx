@@ -1,18 +1,37 @@
-import { Img, Section, Text } from "@react-email/components";
 import { BRAND } from "@/constants";
 
 export function Header() {
-  return (
-    <Section className="px-8 pt-7 pb-2">
-      <Img
-        src={BRAND.logoUrl}
-        width="140"
-        alt={BRAND.name}
-        className="block h-auto max-w-[140px] border-0 outline-none"
-      />
-      <Text className="m-0 pt-4 font-sans text-[11px] font-semibold uppercase tracking-[0.28em] text-slate-500">
-        Precision Metrics
-      </Text>
-    </Section>
-  );
+    return (
+        <tr>
+            <td style={{ padding: "28px 32px 8px 32px" }}>
+                <img
+                    src={BRAND.logoUrl}
+                    width="140"
+                    alt={BRAND.name}
+                    style={{
+                        display: "block",
+                        border: 0,
+                        outline: "none",
+                        textDecoration: "none",
+                        maxWidth: "140px",
+                        height: "auto",
+                    }}
+                />
+                <p
+                    style={{
+                        margin: "16px 0 0 0",
+                        fontFamily:
+                            "'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+                        fontSize: "11px",
+                        fontWeight: 700,
+                        letterSpacing: "0.28em",
+                        textTransform: "uppercase",
+                        color: "#64748b",
+                    }}
+                >
+                    Precision Metrics
+                </p>
+            </td>
+        </tr>
+    );
 }
