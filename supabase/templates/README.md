@@ -25,6 +25,12 @@ render:
    your live domain (e.g. `https://filnevo.com`) so `{{ .SiteURL }}` resolves.
 3. If the image is missing, clients fall back to the `alt="Filnevo"` text.
 
+## Required Supabase Auth setting
+
+Before testing registration, enable **Authentication → Providers → Email → Confirm email** in the Supabase Dashboard. Filnevo's app now fails closed if Supabase returns an immediate signup session, because that means email confirmation is disabled and no verification code was required.
+
+Google OAuth does not use Filnevo's 6-digit email code; Google verifies the email at the provider step, then Supabase redirects back through `/auth/callback`.
+
 ## Templates → Supabase mapping
 
 Apply each file in **Dashboard → Authentication → Emails**, pasting the file's
