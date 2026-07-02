@@ -5,7 +5,7 @@
     "scripts": {
         "dev": "next dev",
         "build": "next build",
-        "build:dev": "next build && mkdir -p dist && cp -r .next/static dist/static 2>/dev/null; echo '<!doctype html><title>Filnevo</title>' > dist/index.html"
+        "build:dev": "next build && mkdir -p dist && (cp -r .next/static dist/static 2>/dev/null || true) && echo '<!doctype html><title>Filnevo</title>' > dist/index.html",
         "start": "next start",
         "lint": "eslint",
         "pages:build": "npx @cloudflare/next-on-pages",
