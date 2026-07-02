@@ -1,205 +1,194 @@
 import { Button } from "@/components/shared/Button";
 
-export default function FeaturesSection() {
+// Bento grid — composition matched to the chosen v3 direction:
+//   1 large hero tile (col-span-2, row-span-2) — Smart Document Capture
+//   1 medium tile (col-span-2)                 — Iron-Clad Audit Trail
+//   2 small tiles                              — Workspaces, Auto-Fill
+//
+// The tokens (bg-surface, border-primary/20, primary/20 icon halo) come
+// straight from the picked prototype's @theme block.
+
+interface BentoTile {
+  title: string;
+  body: string;
+  size: "hero" | "wide" | "small";
+  glyph?: React.ReactNode;
+  emoji?: string;
+}
+
+function DocGlyph() {
   return (
-    <section id="features" className="relative scroll-mt-20 py-20 lg:py-24 overflow-hidden">
-      {/* Background - subtle data grid pattern */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%20viewBox=%220 0 40 40%22><rect width=%2240%22 height=%2240%22 fill=%22none%22/><path d=%22M0 20L40 20M20 0L20 40%22 stroke=%22%231e293b%22 stroke-width=%220.5%22 opacity=%220.08%22/></svg>')]"/>
-      </div>
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" aria-hidden="true">
+      <path d="M4 4h11l5 5v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Z" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M15 4v5h5" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M8 14h8M8 17h5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+}
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center mb-16">
+function ShieldGlyph() {
+  return (
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" aria-hidden="true">
+      <path d="M12 3 4 6v6c0 4.5 3.2 8.5 8 9 4.8-.5 8-4.5 8-9V6l-8-3Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+      <path d="m9 12 2 2 4-4" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+const TILES: BentoTile[] = [
+  {
+    size: "hero",
+    title: "Smart Document Capture",
+    body: "Snap a photo of any receipt or BIR form. Our proprietary AI extracts data with 99.9% accuracy, categorising expenses automatically.",
+    glyph: <DocGlyph />,
+  },
+  {
+    size: "wide",
+    title: "Iron-Clad Audit Trail",
+    body: "Every filing is stamped and stored in a secure digital vault with a full history of changes.",
+    glyph: <ShieldGlyph />,
+  },
+  { size: "small", title: "Workspaces", body: "Multi-entity support", emoji: "🏢" },
+  { size: "small", title: "Auto-Fill", body: "Instant BIR forms", emoji: "⚡" },
+];
+
+function TileFrame({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <div
+      className={`group rounded-3xl border p-8 transition-all duration-200 hover:-translate-y-0.5 ${className}`}
+      style={{
+        backgroundColor: "var(--surface)",
+        borderColor: "var(--hairline)",
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
+function IconHalo({ children }: { children: React.ReactNode }) {
+  return (
+    <div
+      className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl text-primary"
+      style={{ backgroundColor: "rgba(79, 70, 229, 0.2)" }}
+    >
+      {children}
+    </div>
+  );
+}
+
+export default function FeaturesSection() {
+  const [hero, wide, small1, small2] = TILES;
+
+  return (
+    <section
+      id="features"
+      className="relative scroll-mt-20 overflow-hidden py-24 lg:py-28"
+    >
+      <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
+        {/* Heading — matches the left-aligned, oversized display type of v3 */}
+        <div className="mb-12 max-w-2xl">
           <span className="eyebrow">Capabilities</span>
-          <h2 className="mt-5 font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6 tracking-tight">
-            Everything you need for <span className="gradient-text">BIR compliance</span>
+          <h2 className="mt-5 font-heading text-4xl font-extrabold tracking-tight text-white md:text-5xl">
+            Everything for compliance.
           </h2>
-          <p className="text-lg text-text-muted max-w-3xl mx-auto">
-            Every feature is designed to automate your BIR tax filing, ensure accuracy,
-            and save you time on tax preparation.
+          <p className="mt-4 text-lg text-text-muted">
+            From capture to submission, we&apos;ve distilled 12 core BIR functions into
+            the four things you actually reach for every day.
           </p>
         </div>
 
-        {/* Features Grid */}
-        <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-3">
-
-          {/* Feature 1: Zero-Entry Mobile Document Capture */}
-          <article className="data-card p-8">
-            <div className="flex items-start gap-4 mb-6">
-              <div className="flex-shrink-0 w-10 h-10 bg-velocity-blue/10 rounded-xl flex items-center justify-center">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm2 1H8V8h12v13z"/>
-                </svg>
+        {/* Bento grid — 4 cols × 2 rows on desktop */}
+        <div className="grid h-full grid-cols-1 gap-4 md:grid-cols-4 md:grid-rows-2">
+          {/* Hero tile */}
+          <TileFrame className="md:col-span-2 md:row-span-2 flex flex-col justify-between hover:border-primary/60">
+            <div>
+              <IconHalo>{hero.glyph}</IconHalo>
+              <h3 className="mb-4 font-heading text-2xl font-bold text-white">
+                {hero.title}
+              </h3>
+              <p className="leading-relaxed text-text-muted">{hero.body}</p>
+            </div>
+            {/* Product-like preview strip */}
+            <div
+              className="mt-8 overflow-hidden rounded-xl ring-1"
+              style={{
+                backgroundColor: "rgba(10, 10, 26, 0.5)",
+                boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.05)",
+              }}
+            >
+              <div className="grid grid-cols-2 gap-px bg-white/[0.04]">
+                {[
+                  { k: "Vendor", v: "SM Supermalls" },
+                  { k: "Date", v: "May 24, 2026" },
+                  { k: "Subtotal", v: "₱4,285.71" },
+                  { k: "Output VAT", v: "₱514.29" },
+                ].map((row) => (
+                  <div
+                    key={row.k}
+                    className="flex items-center justify-between px-4 py-3"
+                    style={{ backgroundColor: "var(--surface)" }}
+                  >
+                    <span className="text-xs uppercase tracking-widest text-text-faint">
+                      {row.k}
+                    </span>
+                    <span className="font-metrics text-sm font-semibold tabular-nums text-white">
+                      {row.v}
+                    </span>
+                  </div>
+                ))}
               </div>
-              <div>
-                <h3 className="font-metrics text-xl text-velocity-blue font-semibold mb-2">
-                  Zero-Entry Mobile Document Capture
-                </h3>
-                <p className="text-text-muted">
-                  Simply take a photo of any receipt or document with your mobile device.
-                  Our AI automatically extracts all relevant data - vendor, date, amount,
-                  tax information - eliminating manual data entry entirely.
-                </p>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  <span className="badge badge-info">AI Data Extraction</span>
-                  <span className="badge badge-success">Multi-format Support</span>
-                  <span className="badge badge-info">Mobile Optimized</span>
-                </div>
+              <div
+                className="flex items-center justify-between px-4 py-3 text-xs"
+                style={{ backgroundColor: "rgba(79, 70, 229, 0.12)" }}
+              >
+                <span className="uppercase tracking-widest text-primary">
+                  Extracted in 1.8s
+                </span>
+                <span className="font-metrics tabular-nums text-primary">99.9%</span>
               </div>
             </div>
-          </article>
+          </TileFrame>
 
-          {/* Feature 2: BIR 10-Second Auto-Fill */}
-          <article className="data-card p-8">
-            <div className="flex items-start gap-4 mb-6">
-              <div className="flex-shrink-0 w-10 h-10 bg-insight-cyan/10 rounded-xl flex items-center justify-center">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M19 13H5v-2h14v2z"/>
-                </svg>
-              </div>
-              <div>
-                <h3 className="font-metrics text-xl text-insight-cyan font-semibold mb-2">
-                  BIR 10-Second Auto-Fill
-                </h3>
-                <p className="text-text-muted">
-                  Extract data from your documents and automatically populate BIR tax forms
-                  (1701Q, 1702, 2550M, 2550Q, 0605E, etc.) in under 10 seconds. No more
-                  manual form filling - just review and submit.
-                </p>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  <span className="badge badge-success">Form Auto-population</span>
-                  <span className="badge badge-info">Multiple BIR Forms</span>
-                  <span className="badge badge-success">10-Second Processing</span>
-                </div>
-              </div>
-            </div>
-          </article>
+          {/* Wide tile */}
+          <TileFrame className="md:col-span-2 hover:border-primary/60">
+            <IconHalo>{wide.glyph}</IconHalo>
+            <h3 className="mb-2 font-heading text-xl font-bold text-white">
+              {wide.title}
+            </h3>
+            <p className="text-sm text-text-muted">{wide.body}</p>
+          </TileFrame>
 
-          {/* Feature 3: Dynamic BIR Deadline Countdown */}
-          <article className="data-card p-8">
-            <div className="flex items-start gap-4 mb-6">
-              <div className="flex-shrink-0 w-10 h-10 bg-efficiency-green/10 rounded-xl flex items-center justify-center">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="12" cy="12" r="10" stroke="%2310b981" stroke-width="2"/>
-                  <path d="M12 6v2l4 4" stroke="%2310b981" stroke-width="2" stroke-linecap="round"/>
-                  <path d="M12 14v4" stroke="%2310b981" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-              </div>
-              <div>
-                <h3 className="font-metrics text-xl text-efficiency-green font-semibold mb-2">
-                  Dynamic BIR Deadline Countdown
-                </h3>
-                <p className="text-text-muted">
-                  Never miss a BIR deadline again with real-time countdown timers for
-                  all tax filing due dates (monthly, quarterly, annual). Get automated
-                  reminders via email and push notifications as deadlines approach.
-                </p>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  <span className="badge badge-warning">Real-time Countdown</span>
-                  <span className="badge badge-success">Automated Reminders</span>
-                  <span className="badge badge-warning">All Tax Types Covered</span>
-                </div>
-              </div>
-            </div>
-          </article>
-
-          {/* Feature 4: WhatsApp Receipt Forwarding Bot */}
-          <article className="data-card p-8">
-            <div className="flex items-start gap-4 mb-6">
-              <div className="flex-shrink-0 w-10 h-10 bg-warning-amber/10 rounded-xl flex items-center justify-center">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M2 12s3-8 10-8 10 8 10 8-3 8-10 8-10-8zm2 4h6v3h2v-6h-2v-2H8v2h2v3zm3.5-6.5l1.5 1.5L18 8l-1.5-1.5z"/>
-                </svg>
-              </div>
-              <div>
-                <h3 className="font-metrics text-xl text-warning-amber font-semibold mb-2">
-                  WhatsApp Receipt Forwarding Bot
-                </h3>
-                <p className="text-text-muted">
-                  Forward receipts directly to our dedicated WhatsApp number and our AI
-                  bot will automatically process them, extract data, and add them to
-                  your tax records. Perfect for on-the-go expense tracking.
-                </p>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  <span className="badge badge-info">WhatsApp Integration</span>
-                  <span className="badge badge-success">Instant Processing</span>
-                  <span className="badge badge-info">No App Required</span>
-                </div>
-              </div>
-            </div>
-          </article>
-
-          {/* Feature 5: Multi-Currency Ad-Spend Predictor */}
-          <article className="data-card p-8">
-            <div className="flex items-start gap-4 mb-6">
-              <div className="flex-shrink-0 w-10 h-10 bg-alert-red/10 rounded-xl flex items-center justify-center">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10H7v-2h10v2zm0-4H7v-2h10v2zm0-4H7V5h10v2z"/>
-                </svg>
-              </div>
-              <div>
-                <h3 className="font-metrics text-xl text-alert-red font-semibold mb-2">
-                  Multi-Currency Tax Predictor
-                </h3>
-                <p className="text-text-muted">
-                  For businesses with international transactions, our AI predicts your
-                  tax liabilities in multiple currencies (USD, EUR, SGD, etc.) based on
-                  your income and expense patterns, helping you set aside the right
-                  amount for tax payments.
-                </p>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  <span className="badge badge-success">Multi-currency Support</span>
-                  <span className="badge badge-info">AI Tax Prediction</span>
-                  <span className="badge badge-success">Expense Pattern Analysis</span>
-                </div>
-              </div>
-            </div>
-          </article>
-
-          {/* Feature 6: Real-Time Dual-Receipt Anti-Fraud Flag */}
-          <article className="data-card p-8">
-            <div className="flex items-start gap-4 mb-6">
-              <div className="flex-shrink-0 w-10 h-10 bg-neutral-800/20 rounded-xl flex items-center justify-center">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-                </svg>
-              </div>
-              <div>
-                <h3 className="font-metrics text-xl text-neutral-100 font-semibold mb-2">
-                  Real-Time Duplicate Detection
-                </h3>
-                <p className="text-text-muted">
-                  Our system automatically flags potential duplicate receipts or
-                  inconsistent entries in real-time, preventing accidental double
-                  claiming and ensuring clean, audit-ready tax records.
-                </p>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  <span className="badge badge-warning">Duplicate Detection</span>
-                  <span className="badge badge-success">Real-time Alerts</span>
-                  <span className="badge badge-warning">Audit Prevention</span>
-                </div>
-              </div>
-            </div>
-          </article>
-
+          {/* Small tiles */}
+          {[small1, small2].map((tile) => (
+            <TileFrame
+              key={tile.title}
+              className="flex flex-col items-center justify-center text-center"
+            >
+              <div className="mb-2 text-3xl">{tile.emoji}</div>
+              <h4 className="font-bold text-white">{tile.title}</h4>
+              <p className="text-xs text-text-muted">{tile.body}</p>
+            </TileFrame>
+          ))}
         </div>
 
-        {/* Call to Action Section */}
-        <div className="mt-20 text-center">
-          <h3 className="font-heading text-2xl md:text-3xl text-foreground mb-6">
-            Ready to automate your BIR tax compliance?
-          </h3>
-          <p className="text-text-muted max-w-2xl mx-auto mb-8">
-            From zero-entry document capture to automated form filling, our platform
-            ensures accurate, on-time BIR tax filings while saving you hours each month.
+        {/* Compact CTA row — kept subtle so the grid stays the focus */}
+        <div className="mt-16 flex flex-col items-center gap-4 sm:flex-row sm:justify-between">
+          <p className="text-sm text-text-muted">
+            Every capability included on every paid plan.
           </p>
-          <div className="flex flex-col sm:flex-row sm:justify-center gap-4 sm:gap-6">
+          <div className="flex gap-3">
             <Button variant="outline" href="#pricing">
-              See Pricing Plans
+              See pricing
             </Button>
             <Button variant="primary" href="/login?mode=signup">
-              Start Free Trial
+              Start free trial
             </Button>
           </div>
         </div>
