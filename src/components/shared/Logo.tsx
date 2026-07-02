@@ -5,9 +5,12 @@ interface LogoProps {
 }
 
 /**
- * Filnevo brand mark — an "F" whose arms become forward chevrons ("fast
- * forward"), conveying speed, set in a solid rounded tile for reliability.
- * Uses the Precision Metrics brand gradient (velocity-blue → insight-cyan).
+ * Filnevo wordmark — redesigned for the Midnight Indigo direction.
+ * A tight, uppercase Syne wordmark with a single indigo period as the mark,
+ * paired with an optional monogram tile. Reads as a modern fintech seal.
+ *
+ * Tokens are copied verbatim from the chosen direction:
+ *   surface #141432, primary #4f46e5, border rgba(79,70,229,0.2)
  */
 export function Logo({ size = 36, withWordmark = false, className = "" }: LogoProps) {
   return (
@@ -21,45 +24,33 @@ export function Logo({ size = 36, withWordmark = false, className = "" }: LogoPr
         aria-hidden="true"
         className="shrink-0"
       >
-        <defs>
-          <linearGradient id="flnGrad" x1="4" y1="4" x2="36" y2="36" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#3b82f6" />
-            <stop offset="1" stopColor="#06b6d4" />
-          </linearGradient>
-        </defs>
-
-        {/* Reliable, solid tile */}
+        {/* Indigo tile — precision seal */}
         <rect
-          x="2.5"
-          y="2.5"
-          width="35"
-          height="35"
-          rx="10"
-          fill="url(#flnGrad)"
-          fillOpacity="0.12"
-          stroke="url(#flnGrad)"
-          strokeWidth="1.5"
+          x="1.5"
+          y="1.5"
+          width="37"
+          height="37"
+          rx="11"
+          fill="#141432"
+          stroke="#4f46e5"
+          strokeOpacity="0.4"
+          strokeWidth="1.25"
         />
-
-        {/* Trailing speed lines */}
-        <g stroke="url(#flnGrad)" strokeWidth="2.2" strokeLinecap="round" opacity="0.5">
-          <path d="M6 16 H10" />
-          <path d="M5.5 22 H9" />
-        </g>
-
-        {/* "F" spine + forward chevrons (speed) */}
-        <g stroke="url(#flnGrad)" strokeWidth="3.4" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M15 11 V29" />
-          <path d="M15 11 H25" />
-          <path d="M22 7.5 L25.5 11 L22 14.5" />
-          <path d="M15 19.5 H22" />
-          <path d="M19 16.5 L22.5 19.5 L19 22.5" />
-        </g>
+        {/* Sharp F monogram in Syne-like geometry */}
+        <path
+          d="M13.5 11 H27.5 M13.5 11 V29 M13.5 20 H23"
+          stroke="#ffffff"
+          strokeWidth="3"
+          strokeLinecap="square"
+          strokeLinejoin="miter"
+        />
+        {/* Indigo accent dot — the "period" that anchors the wordmark */}
+        <circle cx="29.5" cy="27.5" r="2.25" fill="#4f46e5" />
       </svg>
 
       {withWordmark && (
-        <span className="gradient-text font-heading text-lg font-bold tracking-tight">
-          Filnevo
+        <span className="font-heading text-lg font-extrabold uppercase tracking-tighter text-white">
+          Filnevo<span className="text-primary">.</span>
         </span>
       )}
     </span>

@@ -5,13 +5,20 @@
    Clean analytical foundation with purposeful motion and data-focused clarity
    ========================================================================== */
 
-/* Base Colors - Optimized for data visualization and readability */
+/* ============================================================================
+   MIDNIGHT INDIGO — tokens copied verbatim from the chosen redesign direction
+   (Modern conversational SaaS, v3). Legacy semantic aliases (velocity-blue,
+   insight-cyan, hairline, etc.) are re-pointed onto the indigo primary so
+   every existing component inherits the new palette without per-file edits.
+   ========================================================================== */
 :root {
-  /* Dark analytical base */
-  --background: #0a0e17;
-  --foreground: #e6e9f0;
+  /* Midnight Indigo base — verbatim from direction */
+  --background: #0a0a1a;
+  --foreground: #ffffff;
+  --surface: #141432;
+  --surface-hover: #1e1e5a;
 
-  /* Neutral ramp for data density */
+  /* Neutral ramp — remapped to indigo surfaces for data-density components */
   --neutral-50: #f8fafc;
   --neutral-100: #f1f5f9;
   --neutral-200: #e2e8f0;
@@ -19,41 +26,44 @@
   --neutral-400: #94a3b8;
   --neutral-500: #64748b;
   --neutral-600: #475569;
-  --neutral-700: #334155;
-  --neutral-800: #1e293b;
-  --neutral-900: #0f172a;
-  --neutral-950: #020617;
+  --neutral-700: #1e1e5a;
+  --neutral-800: #1e1e5a;
+  --neutral-900: #141432;
+  --neutral-950: #0a0a1a;
 
-  /* Purposeful accent colors for metrics and status */
-  --velocity-blue: #3b82f6;    /* Primary - conveys speed and technology */
-  --insight-cyan: #06b6d4;     /* Secondary - for insights and analytics */
-  --efficiency-green: #10b981; /* Success - positive metrics and completions */
-  --warning-amber: #f59e0b;    /* Warning - attention needed */
-  --alert-red: #ef4444;        /* Error - critical issues */
+  /* Locked accent — indigo primary from direction */
+  --primary: #4f46e5;
+  --primary-foreground: #ffffff;
+  --primary-glow: #6366f1;
 
-  /* Specialized colors for data visualization */
-  --chart-bg: rgba(59, 130, 246, 0.08);
-  --chart-grid: rgba(59, 130, 246, 0.15);
-  --chart-primary: #3b82f6;
-  --chart-secondary: #06b6d4;
+  /* Legacy aliases mapped to indigo so hero/eyebrow/buttons/gradients all
+     resolve to the Midnight Indigo system. */
+  --velocity-blue: #4f46e5;
+  --insight-cyan: #6366f1;
+  --efficiency-green: #10b981;
+  --warning-amber: #f59e0b;
+  --alert-red: #ef4444;
+
+  /* Charts */
+  --chart-bg: rgba(79, 70, 229, 0.08);
+  --chart-grid: rgba(79, 70, 229, 0.15);
+  --chart-primary: #4f46e5;
+  --chart-secondary: #6366f1;
   --chart-success: #10b981;
   --chart-warning: #f59e0b;
   --chart-danger: #ef4444;
 
-  --hairline: #1e293b;
-  --input-bg: #111827;
-  --input-border: #374151;
+  --hairline: rgba(79, 70, 229, 0.2);
+  --input-bg: #141432;
+  --input-border: rgba(79, 70, 229, 0.25);
 
-  /* Secondary / supporting text — previously undefined, which left every
-     `text-text-muted` element rendering at full foreground brightness and
-     killed the visual hierarchy. */
   --text-muted: #94a3b8;
   --text-faint: #64748b;
 
-  /* Brand gradient stops */
-  --brand-from: #3b82f6;
-  --brand-via: #4f86f7;
-  --brand-to: #06b6d4;
+  /* Brand gradient — indigo → violet */
+  --brand-from: #4f46e5;
+  --brand-via: #6366f1;
+  --brand-to: #818cf8;
 }
 
 /* Typography - optimized for data density and readability */
@@ -99,12 +109,13 @@
   --color-chart-warning: var(--chart-warning);
   --color-chart-danger: var(--chart-danger);
 
-  /* Fonts — loaded via next/font in layout.tsx and exposed as CSS variables.
-     Mapped to semantic roles here so component class names stay stable. */
-  --font-heading: var(--font-bricolage), system-ui, sans-serif;   /* Display headings — distinctive, editorial */
-  --font-body: var(--font-hanken), system-ui, sans-serif;         /* Body — refined, highly readable */
-  --font-metrics: var(--font-space-grotesk), system-ui, sans-serif; /* Numbers — geometric, tabular */
-  --font-data: var(--font-ibm-plex-mono), ui-monospace, monospace;  /* Code, IDs, technical data */
+  /* Fonts — Syne (display) + Plus Jakarta Sans (body), verbatim from the
+     chosen redesign direction. Variable names kept so components need no
+     renaming. */
+  --font-heading: var(--font-syne), system-ui, sans-serif;   /* Display */
+  --font-body: var(--font-jakarta), system-ui, sans-serif;   /* Body */
+  --font-metrics: var(--font-space-grotesk), system-ui, sans-serif;
+  --font-data: var(--font-ibm-plex-mono), ui-monospace, monospace;
 }
 
 body {
