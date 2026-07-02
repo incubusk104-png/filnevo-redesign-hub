@@ -8,7 +8,7 @@
  */
 export function safeNextPath(
   next: string | null | undefined,
-  fallback = "/",
+  fallback = "/dashboard",
 ): string {
   if (!next) return fallback;
 
