@@ -373,9 +373,17 @@ export async function signInWithGoogle(
     _prev: AuthState,
     formData: FormData,
 ): Promise<AuthState> {
+    const next = safeNextPath(formData.get("next") as string | null);
+
+    // Demo mode: no Supabase project yet. Simulate a successful Google sign-in
+    // so the button doesn't error, and land the user in the dashboard.
+    if (isDemoMode()) {
+        revalidatePath("/", "layout");
+        redirect(next);
+    }
+
     const supabase = await createClient();
     const origin = await getOrigin();
-    const next = safeNextPath(formData.get("next") as string | null);
     const { data, error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
@@ -387,7 +395,12 @@ export async function signInWithGoogle(
         },
     });
     if (error) return { error: error.message };
-    if (!data?.url) return { error: "Could not start Google sign-in." };
+    if (!data?.url) {
+        return {
+            error:
+                "Google sign-in isn't configured yet. Enable Lovable Cloud and turn on the Google provider to use this option.",
+        };
+    }
     return { redirectTo: data.url };
 }
 
